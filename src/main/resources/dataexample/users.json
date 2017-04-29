@@ -3,7 +3,7 @@
   "Data": [
     {
       "PIN": "111",
-      "Name": "imam",
+      "Name": "Jet Lee",
       "RFID": "",
       "Password": "0",
       "Privilege": 0,
@@ -24,7 +24,7 @@
     },
     {
       "PIN": "112",
-      "Name": "diya",
+      "Name": "Bruce Lee",
       "RFID": "",
       "Password": "0",
       "Privilege": 0,

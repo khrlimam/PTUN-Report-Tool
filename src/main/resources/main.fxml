@@ -14,10 +14,10 @@
                 <Pane />
                 <Pane prefWidth="800.0" styleClass="header-primary">
                     <children>
-                        <Label prefHeight="24.0" prefWidth="356.0" styleClass="header-text-primary" text="PTUN Mataram Report Tool">
-                            <padding>
-                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                            </padding>
+                        <Label prefHeight="52.0" prefWidth="460.0" styleClass="header-text-primary" text="PTUN Mataram Report Tool">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
                         </Label>
                     </children>
                 </Pane>

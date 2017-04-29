@@ -21,7 +21,7 @@ public class DataScanLogOperations {
         this.scanLogs = allScanLogs;
     }
 
-    public Map<String, Map<String, List<Scan>>> groupByDateThenPIN() {
+    public Map<String, Map<String, List<Scan>>> groupByDateAndPIN() {
         return getScanLogs()
                 .stream()
                 .collect(Collectors

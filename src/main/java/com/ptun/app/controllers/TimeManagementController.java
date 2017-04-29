@@ -4,6 +4,9 @@ import com.j256.ormlite.dao.Dao;
 import com.ptun.app.customui.NumberTextField;
 import com.ptun.app.db.models.Time;
 import com.ptun.app.db.models.TimeManagement;
+import com.ptun.app.eventbus.EventBus;
+import com.ptun.app.eventbus.events.ManagemenTimeEvent;
+import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +24,7 @@ import java.util.ResourceBundle;
 public class TimeManagementController implements Initializable {
 
     private Dao<TimeManagement, Integer> thisDao = TimeManagement.getDao();
-    private TimeManagement timeManagement = thisDao.queryForId(1);
+    private TimeManagement timeManagement = thisDao.queryForId(Constants.SETTING_ID);
 
     @FXML
     private TextField tfOnDuty, tfOffDuty;
@@ -63,6 +66,7 @@ public class TimeManagementController implements Initializable {
             }
             thisDao.refresh(timeManagement);
             setData(timeManagement);
+            EventBus.getDefault().post(new ManagemenTimeEvent(timeManagement));
             Util.showNotif("Sukses", String.format("Pengaturan telah %s", message), NotificationType.SUCCESS);
         } catch (SQLException e) {
             e.printStackTrace();

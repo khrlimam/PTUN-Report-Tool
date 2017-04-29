@@ -49,4 +49,23 @@ public class Util {
         tray.showAndDismiss(Duration.seconds(1));
     }
 
+    public static String getTimeLaps(DateTime start, DateTime end) {
+        long different = end.toDate().getTime() - start.toDate().getTime();
+        long elapsedDays = different / Constants.daysInMilli;
+        different = different % Constants.daysInMilli;
+
+        long elapsedHours = different / Constants.hoursInMilli;
+        different = different % Constants.hoursInMilli;
+
+        long elapsedMinutes = different / Constants.minutesInMilli;
+        different = different % Constants.minutesInMilli;
+
+        long elapsedSeconds = different / Constants.secondsInMilli;
+
+        elapsedHours = (elapsedHours < 0) ? 0 : elapsedHours;
+        elapsedMinutes = (elapsedMinutes < 0) ? 0 : elapsedMinutes;
+
+        return String.format("%d:%d", elapsedHours, elapsedMinutes);
+    }
+
 }

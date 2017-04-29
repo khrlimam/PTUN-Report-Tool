@@ -3,6 +3,9 @@ package com.ptun.app.controllers;
 import com.j256.ormlite.dao.Dao;
 import com.ptun.app.customui.NumberTextField;
 import com.ptun.app.db.models.AppSettings;
+import com.ptun.app.eventbus.EventBus;
+import com.ptun.app.eventbus.events.AppSettingEvent;
+import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,7 +29,7 @@ public class AppSettingController implements Initializable {
     private NumberTextField tfPortServer;
 
     private Dao<AppSettings, Integer> appSettingDao = AppSettings.getDao();
-    private AppSettings appSettings = appSettingDao.queryForId(1);
+    private AppSettings appSettings = appSettingDao.queryForId(Constants.SETTING_ID);
 
     public AppSettingController() throws SQLException {
     }
@@ -63,6 +66,7 @@ public class AppSettingController implements Initializable {
             }
             appSettingDao.refresh(appSettings);
             setData(appSettings);
+            EventBus.getDefault().post(new AppSettingEvent(appSettings));
             Util.showNotif("Sukses", String.format("Pengaturan telah %s", message), NotificationType.SUCCESS);
         } catch (SQLException e) {
             e.printStackTrace();
