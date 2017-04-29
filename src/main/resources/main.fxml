@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="676.0" prefWidth="800.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ptun.app.controllers.MainController">
+    <children>
+        <VBox prefHeight="577.0" prefWidth="727.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Pane />
+                <Pane />
+                <Pane prefWidth="800.0" styleClass="header-primary">
+                    <children>
+                        <Label prefHeight="24.0" prefWidth="356.0" styleClass="header-text-primary" text="PTUN Mataram Report Tool">
+                            <padding>
+                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                            </padding>
+                        </Label>
+                    </children>
+                </Pane>
+                <ToolBar>
+                    <items>
+                        <Button fx:id="btnTambahPasien" mnemonicParsing="false" onAction="#showFormAppSetting" styleClass="btn-primary" text="Pengaturan Aplikasi" />
+                  <Button fx:id="btnTambahPasien1" mnemonicParsing="false" onAction="#showFormTimeManagement" styleClass="btn-primary" text="Managemen Waktu" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                    </items>
+                </ToolBar>
+                <Pane />
+                <TabPane prefHeight="593.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab text="Data Scan Log">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="800.0">
+                                    <children>
+                                        <fx:include fx:id="tblSemuaPasien" source="scanlog.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

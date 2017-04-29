@@ -1,0 +1,77 @@
+{
+  "Result": true,
+  "Data": [
+    {
+      "SN": "616385016280372",
+      "ScanDate": "2017-04-21 09:25:09",
+      "PIN": "111",
+      "VerifyMode": 1,
+      "IOMode": 1,
+      "WorkCode": 0
+    },
+    {
+      "SN": "616385016280372",
+      "ScanDate": "2017-04-25 08:23:20",
+      "PIN": "111",
+      "VerifyMode": 1,
+      "IOMode": 1,
+      "WorkCode": 0
+    },
+    {
+      "SN": "616385016280372",
+      "ScanDate": "2017-04-25 14:54:53",
+      "PIN": "112",
+      "VerifyMode": 1,
+      "IOMode": 1,
+      "WorkCode": 0
+    },
+    {
+      "SN": "616385016280372",
+      "ScanDate": "2017-04-25 14:55:19",
+      "PIN": "111",
+      "VerifyMode": 1,
+      "IOMode": 1,
+      "WorkCode": 0
+    },
+    {
+      "SN": "616385016280372",
+      "ScanDate": "2017-04-26 07:12:27",
+      "PIN": "111",
+      "VerifyMode": 1,
+      "IOMode": 1,
+      "WorkCode": 0
+    },
+    {
+      "SN": "616385016280372",
+      "ScanDate": "2017-04-27 06:37:01",
+      "PIN": "111",
+      "VerifyMode": 1,
+      "IOMode": 1,
+      "WorkCode": 0
+    },
+    {
+      "SN": "616385016280372",
+      "ScanDate": "2017-04-27 14:39:48",
+      "PIN": "111",
+      "VerifyMode": 1,
+      "IOMode": 1,
+      "WorkCode": 0
+    },
+    {
+      "SN": "616385016280372",
+      "ScanDate": "2017-04-28 22:55:06",
+      "PIN": "111",
+      "VerifyMode": 1,
+      "IOMode": 2,
+      "WorkCode": 0
+    },
+    {
+      "SN": "616385016280372",
+      "ScanDate": "2017-04-29 06:26:58",
+      "PIN": "111",
+      "VerifyMode": 1,
+      "IOMode": 1,
+      "WorkCode": 0
+    }
+  ]
+}
