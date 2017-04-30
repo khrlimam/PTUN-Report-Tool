@@ -26,6 +26,7 @@ mvn install:install-file -Dfile=path/to/TrayNotification.jar -DgroupId=tray.noti
 ```
 mvn jfx:jar
 ```
+Your installed app exists in: projectfolder/target/jfx/app/
 
 # OR!
 Try released version, download newest version here [https://github.com/khyrulimam/PTUN-Report-Tool/releases](RELEASE), then run it. No setup needed, just make sure you have jre8 installed.
