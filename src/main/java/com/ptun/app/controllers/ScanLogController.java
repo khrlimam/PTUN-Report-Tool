@@ -116,7 +116,7 @@ public class ScanLogController implements Initializable {
 
     @FXML
     private void showReport() {
-        List<Scan> scanLogs = AllScanLogs.getMachineData();
+        List<Scan> scanLogs = AllScanLogs.getLocalData();
         List<User> users = AllUsers.getLocalData();
         this.dataScanLogOperations = new DataScanLogOperations(scanLogs);
         this.dataUserOperations = new DataUserOperations(users);
