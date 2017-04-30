@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="absensikaryawan" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2b66e155-3f93-48e9-bb9a-4c67939537b9">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="26"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table 3">
 		<box>
@@ -38,21 +38,28 @@
 				<textElement textAlignment="Center">
 					<font size="20" isBold="true"/>
 				</textElement>
-				<text><![CDATA[PENGADILAN TATA USAHA NEGARA MATARAM]]></text>
+				<text><![CDATA[PENGADILAN TATA USAHA NEGARA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="38" width="968" height="20" uuid="3368d2a4-7a7e-4c38-92b6-17f80dca075f"/>
+				<reportElement x="0" y="57" width="968" height="20" uuid="3368d2a4-7a7e-4c38-92b6-17f80dca075f"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Alamat: Jl. Dr. Soedjono Lingkar Selatan, Mataram, Nusa Tenggara Barat - 83116]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="58" width="968" height="20" uuid="28cfea01-ce04-4396-b726-db7f448174ca"/>
+				<reportElement x="0" y="77" width="968" height="20" uuid="28cfea01-ce04-4396-b726-db7f448174ca"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Telp/FAX: (0370) 640680 - 644876]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="29" width="968" height="27" uuid="d142da2f-7d04-470f-8249-4ff6e74c5272"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MATARAM]]></text>
 			</staticText>
 		</band>
 	</pageHeader>

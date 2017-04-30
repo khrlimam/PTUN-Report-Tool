@@ -5,6 +5,7 @@ package com.ptun.app;
  */
 
 import com.ptun.app.controllers.LoginModalController;
+import com.ptun.app.db.DB;
 import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.DBUtil;
 import javafx.application.Application;
