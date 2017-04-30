@@ -63,7 +63,6 @@ public class Scan {
         try {
             DateTime start = getScanDate().withTime(LocalTime.parse(time)).minusMinutes(tolerance);
             DateTime end = getScanDate();
-            System.out.println(Days.daysBetween(end, start));
             return Util.getTimeLaps(end, start);
         } catch (NullPointerException e) {
             return "0:0";
