@@ -3,48 +3,42 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<style name="table">
+	<style name="table 3">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="table_TH" mode="Opaque" backcolor="#85BE85">
+	<style name="table 3_TH" mode="Opaque" backcolor="#EAFFBF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="table_CH" mode="Opaque" backcolor="#85BE85">
+	<style name="table 3_CH" mode="Opaque" backcolor="#F7FFE6">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="table 1">
-		<box>
-			<pen lineWidth="1.0" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 1_TH" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 1_CH" mode="Opaque" backcolor="#FFBFBF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<subDataset name="Table Dataset 1" uuid="1f5ea4a9-666c-42f9-844a-4bed1c87bfc4"/>
-	<subDataset name="Table Dataset 2" uuid="e325e945-10b5-4c3d-b531-e42843a09907"/>
+	<subDataset name="ScanLogDataSource" uuid="69a5969a-f8e8-475e-829f-4af787005e12">
+		<parameter name="data" class="java.lang.String"/>
+		<queryString language="JSON">
+			<![CDATA[]]>
+		</queryString>
+		<field name="PIN" class="java.lang.String"/>
+		<field name="NAMA" class="java.lang.String"/>
+		<field name="TANGGAL" class="java.lang.String"/>
+		<field name="JAM_TUGAS" class="java.lang.String"/>
+		<field name="SELESAI_TUGAS" class="java.lang.String"/>
+		<field name="SCAN_MASUK" class="java.lang.String"/>
+		<field name="SCAN_PULANG" class="java.lang.String"/>
+		<field name="TERLAMBAT" class="java.lang.String"/>
+		<field name="LEBIH_AWAL" class="java.lang.String"/>
+		<field name="ABSEN" class="java.lang.String"/>
+	</subDataset>
 	<pageHeader>
 		<band height="120" splitType="Stretch">
 			<image>

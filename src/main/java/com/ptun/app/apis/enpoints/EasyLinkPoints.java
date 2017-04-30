@@ -1,5 +1,6 @@
 package com.ptun.app.apis.enpoints;
 
+import com.ptun.app.apis.RetrofitBuilder;
 import com.ptun.app.apis.enpoints.models.AllScanLogs;
 import com.ptun.app.apis.enpoints.models.AllUsers;
 import retrofit2.Call;
@@ -22,4 +23,8 @@ public interface EasyLinkPoints {
     @FormUrlEncoded
     @POST("scanlog/new")
     Call<AllScanLogs> newScanLogs(@Field("sn") String sn);
+
+    static EasyLinkPoints getClient() {
+        return RetrofitBuilder.getInstance().create(EasyLinkPoints.class);
+    }
 }

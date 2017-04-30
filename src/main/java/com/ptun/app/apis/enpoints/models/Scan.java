@@ -43,7 +43,7 @@ public class Scan {
 
     public String getScanTime() {
         if (getScanDate() == null)
-            return "";
+            return "-";
         return this.getScanDate().toString(DateTimeFormat.forPattern(Constants.HOUR_MINUTE_PATTERN));
     }
 
@@ -53,9 +53,9 @@ public class Scan {
             DateTime endTime = getScanDate();
             return Util.getTimeLaps(startTime, endTime);
         } catch (NullPointerException e) {
-            return "";
+            return "0:0";
         } catch (IllegalArgumentException e) {
-            return "";
+            return "0:0";
         }
     }
 
@@ -66,9 +66,9 @@ public class Scan {
             System.out.println(Days.daysBetween(end, start));
             return Util.getTimeLaps(end, start);
         } catch (NullPointerException e) {
-            return "";
+            return "0:0";
         } catch (IllegalArgumentException e) {
-            return "";
+            return "0:0";
         }
     }
 

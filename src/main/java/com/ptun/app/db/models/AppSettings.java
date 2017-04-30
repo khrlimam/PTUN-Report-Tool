@@ -29,7 +29,7 @@ public class AppSettings {
 
     public String getURL() {
         if (this.ipServer == null || portServer == null)
-            return Constants.BASE_URL;
+            return Constants.INIT_BASE_URL;
         return String.format("http://%s:%s", ipServer, portServer);
     }
 

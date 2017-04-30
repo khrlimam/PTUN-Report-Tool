@@ -32,15 +32,15 @@
         </HBox>
         <TableView fx:id="tblScanLog" prefHeight="525.0" prefWidth="780.0">
             <columns>
-                <TableColumn style="-fx-alignment: center" fx:id="cPin" prefWidth="45.0" text="PIN" />
-                <TableColumn fx:id="cNama" prefWidth="154.0" text="Nama" />
-                <TableColumn style="-fx-alignment: center" fx:id="cTgl" prefWidth="80.0" text="Tanggal" />
-                <TableColumn style="-fx-alignment: center" fx:id="cJamTugas" prefWidth="81.0" text="Jam Tugas" />
-                <TableColumn style="-fx-alignment: center" fx:id="cJamSelesaiTugas" prefWidth="87.0" text="Selesai Tugas" />
-                <TableColumn style="-fx-alignment: center" fx:id="cScanMasuk" prefWidth="85.0" text="Scan Masuk" />
-                <TableColumn style="-fx-alignment: center" fx:id="cScanPulang" prefWidth="96.0" text="Scan Pulang" />
-                <TableColumn style="-fx-alignment: center" fx:id="cTerlambat" minWidth="3.0" text="Terlambat" />
-                <TableColumn style="-fx-alignment: center" fx:id="cLebihAwal" minWidth="3.0" prefWidth="82.0" text="Lebih Awal" />
+                <TableColumn fx:id="cPin" prefWidth="45.0" style="-fx-alignment: center" text="PIN" />
+                <TableColumn fx:id="cNama" prefWidth="200.0" text="Nama" />
+                <TableColumn fx:id="cTgl" style="-fx-alignment: center" text="Tanggal" />
+                <TableColumn fx:id="cJamTugas" prefWidth="81.0" style="-fx-alignment: center" text="Jam Tugas" />
+                <TableColumn fx:id="cJamSelesaiTugas" prefWidth="87.0" style="-fx-alignment: center" text="Selesai Tugas" />
+                <TableColumn fx:id="cScanMasuk" prefWidth="85.0" style="-fx-alignment: center" text="Scan Masuk" />
+                <TableColumn fx:id="cScanPulang" prefWidth="96.0" style="-fx-alignment: center" text="Scan Pulang" />
+                <TableColumn fx:id="cTerlambat" minWidth="3.0" style="-fx-alignment: center" text="Terlambat" />
+                <TableColumn fx:id="cLebihAwal" minWidth="3.0" prefWidth="82.0" style="-fx-alignment: center" text="Lebih Awal" />
                 <TableColumn fx:id="cAbsen" minWidth="0.0" prefWidth="70.0" text="Absen" />
             </columns>
             <VBox.margin>

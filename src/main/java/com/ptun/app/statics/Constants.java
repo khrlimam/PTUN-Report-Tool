@@ -1,12 +1,14 @@
 package com.ptun.app.statics;
 
 import com.ptun.app.apis.RetrofitBuilder;
+import com.ptun.app.controllers.ScanLogController;
 
 /**
  * Created by Lenovo on 4/28/2017.
  */
 public class Constants {
-    public static final String BASE_URL = "http://192.168.8.3:7005/";
+    public static final String BASE_URL = ScanLogController.BASE_URL;
+    public static final String INIT_BASE_URL = "http://192.168.8.3:7005/";
     public static final String SN = "616385016280372";
     public static final String DB_NAME = "ptunmataram";
     public static final String APP_NAME = "PTUN Report Tool";

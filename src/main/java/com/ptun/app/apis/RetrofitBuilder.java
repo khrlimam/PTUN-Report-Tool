@@ -1,5 +1,6 @@
 package com.ptun.app.apis;
 
+import com.ptun.app.eventbus.EventBus;
 import com.ptun.app.statics.Constants;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

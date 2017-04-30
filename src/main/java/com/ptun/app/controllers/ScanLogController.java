@@ -3,9 +3,6 @@ package com.ptun.app.controllers;
 import com.google.common.eventbus.Subscribe;
 import com.j256.ormlite.dao.Dao;
 import com.ptun.app.App;
-import com.ptun.app.apis.GsonConverter;
-import com.ptun.app.apis.RetrofitBuilder;
-import com.ptun.app.apis.enpoints.EasyLinkPoints;
 import com.ptun.app.apis.enpoints.models.AllScanLogs;
 import com.ptun.app.apis.enpoints.models.AllUsers;
 import com.ptun.app.apis.enpoints.models.Scan;
@@ -28,18 +25,28 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.FileChooser;
+import javafx.util.StringConverter;
 import lombok.Data;
+import net.sf.dynamicreports.report.builder.ReportTemplateBuilder;
 import net.sf.dynamicreports.report.builder.style.BorderBuilder;
+import net.sf.dynamicreports.report.builder.style.PenBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
-import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
+import net.sf.dynamicreports.report.constant.*;
 import net.sf.dynamicreports.report.exception.DRException;
-import retrofit2.Call;
 import tray.notification.NotificationType;
 
-import java.io.*;
+import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
@@ -68,6 +75,7 @@ public class ScanLogController implements Initializable {
 
     private TimeManagement timeManagement = timeManagementDao.queryForId(Constants.SETTING_ID);
     private AppSettings appSettings = appSettingDao.queryForId(Constants.SETTING_ID);
+    public static String BASE_URL;
 
 
     @FXML
@@ -87,7 +95,10 @@ public class ScanLogController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         EventBus.getDefault().register(this);
+        BASE_URL = appSettings.getURL();
         setUpTableColumns();
+        dpDari.setConverter(new DatePickerPattern());
+        dpSampai.setConverter(new DatePickerPattern());
     }
 
     private void setUpTableColumns() {
@@ -104,24 +115,20 @@ public class ScanLogController implements Initializable {
     }
 
     @FXML
-    private void showReport() throws DRException, IOException {
-        EasyLinkPoints easyLinkPoints = RetrofitBuilder.getInstance().create(EasyLinkPoints.class);
-        Call<AllScanLogs> allScanLogs = easyLinkPoints.allScanLogs(Constants.SN);
-        Call<AllUsers> allUsers = easyLinkPoints.allUsers(Constants.SN);
-        List<Scan> scanLogs = allScanLogs.execute().body().getData();
-        List<User> users = allUsers.execute().body().getData();
-//        AllScanLogs allScanLogs = GsonConverter.getIt().fromJson(new InputStreamReader(getClass().getResourceAsStream("/dataexample/scanlog.json")), AllScanLogs.class);
-//        AllUsers allUsers = GsonConverter.getIt().fromJson(new InputStreamReader(getClass().getResourceAsStream("/dataexample/users.json")), AllUsers.class);
+    private void showReport() {
+        List<Scan> scanLogs = AllScanLogs.getMachineData();
+        List<User> users = AllUsers.getLocalData();
         this.dataScanLogOperations = new DataScanLogOperations(scanLogs);
         this.dataUserOperations = new DataUserOperations(users);
-        tblScanLog.setItems(generateDataSource());
+        tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText()));
     }
 
-    private ObservableList<Map> generateDataSource() {
+    private ObservableList<Map> generateDataSource(String from, String to) {
         ObservableList<Map> data = FXCollections.observableArrayList();
         Map<String, Map<String, List<Scan>>> grouped = this.dataScanLogOperations.groupByDateAndPIN();
+        Set<String> keys = getKeysBetween(grouped.keySet(), from, to);
         try {
-            TreeSet<String> sortedDate = new TreeSet<>(grouped.keySet());
+            TreeSet<String> sortedDate = new TreeSet<>(keys);
             sortedDate.stream().forEach(date -> {
                 Map value = new HashMap();
                 grouped.get(date).entrySet().stream().forEach(stringListEntry -> {
@@ -148,37 +155,68 @@ public class ScanLogController implements Initializable {
         return data;
     }
 
+    private Set<String> getKeysBetween(Set<String> keys, String from, String to) {
+        if (from.length() <= 0 || to.length() <= 0)
+            return keys;
+        return keys.stream().filter(toCompare -> isBetween(toCompare, from, to)).collect(Collectors.toSet());
+    }
+
+    private boolean isBetween(String toCompare, String from, String end) {
+        //1 if greater 0 if equals -1 if less
+        int a = toCompare.compareTo(from);
+        int b = toCompare.compareTo(end);
+        return a >= 0 && b <= 0;
+    }
+
     @FXML
     private void downloadReport() throws FileNotFoundException, DRException {
         try {
+            String from = dpDari.getEditor().getText();
+            String to = dpSampai.getEditor().getText();
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
             File file = fileChooser.showSaveDialog(App.PRIMARY_STAGE);
             OutputStream outputStream = new FileOutputStream(file);
             BorderBuilder border = stl.border();
             border
-                    .setBottomPen(stl.penDouble())
+                    .setBottomPen(stl.penThin())
                     .setLeftPen(stl.penThin())
                     .setTopPen(stl.penThin())
                     .setRightPen(stl.penThin());
-            StyleBuilder borderStyle = stl.style()
+            StyleBuilder style1 = stl.style()
+                    .setName("style1")
+                    .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+                    .setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)
+                    .setPadding(5)
                     .setBorder(border);
+            StyleBuilder columnStyle = stl.style()
+                    .setName("columnStyle")
+                    .setPadding(5)
+                    .setVerticalAlignment(VerticalAlignment.MIDDLE);
+            StyleBuilder columnTitleStyle = stl.style(columnStyle)
+                    .setName("columnTitleStyle")
+                    .setBorder(stl.pen1Point())
+                    .setHorizontalAlignment(HorizontalAlignment.CENTER);
+            ReportTemplateBuilder template = template()
+                    .templateStyles(style1, columnStyle, columnTitleStyle);
             report()
-                    .columns(
-                            col.emptyColumn(),
-                            col.column("PIN", COLUMN_PIN_KEY, type.stringType()).setStyle(borderStyle),
-                            col.column("Nama", COLUMN_NAMA_KEY, type.stringType()).setStyle(borderStyle),
-                            col.column("Tanggal", COLUMN_TANGGAL_KEY, type.stringType()).setStyle(borderStyle),
-                            col.column("Jam Tugas", COLUMN_JAM_TUGAS_KEY, type.stringType()).setStyle(borderStyle),
-                            col.column("Selesai Tugas", COLUMN_SELESAI_TUGAS_KEY, type.stringType()).setStyle(borderStyle),
-                            col.column("Scan Masuk", COLUMN_SCAN_MASUK_KEY, type.stringType()).setStyle(borderStyle),
-                            col.column("Scan Pulang", COLUMN_SCAN_PULANG_KEY, type.stringType()).setStyle(borderStyle),
-                            col.column("Terlambat", COLUMN_TERLAMBAT_KEY, type.stringType()).setStyle(borderStyle),
-                            col.column("Lebih Awal", COLUMN_LEBIH_AWAL_KEY, type.stringType()).setStyle(borderStyle),
-                            col.column("Absen", COLUMN_ABSEN_KEY, type.stringType()).setStyle(borderStyle)
-                    ).setColumnHeaderStyle(borderStyle)
+                    .setTemplate(template)
+                    .setColumnStyle(stl.templateStyle("columnStyle"))
+                    .setColumnTitleStyle(stl.templateStyle("columnTitleStyle"))
                     .setTemplateDesign(getClass().getClassLoader().getResource("absensikaryawan.jrxml"))
-                    .setDataSource(generateDataSource())
+                    .columns(
+                            col.column("PIN", COLUMN_PIN_KEY, type.stringType()).setStyle(style1).setWidth(45),
+                            col.column("Nama", COLUMN_NAMA_KEY, type.stringType()).setStyle(style1).setWidth(162),
+                            col.column("Tanggal", COLUMN_TANGGAL_KEY, type.stringType()).setStyle(style1).setWidth(90),
+                            col.column("Jam Tugas", COLUMN_JAM_TUGAS_KEY, type.stringType()).setStyle(style1).setWidth(90),
+                            col.column("Selesai Tugas", COLUMN_SELESAI_TUGAS_KEY, type.stringType()).setStyle(style1).setWidth(90),
+                            col.column("Scan Masuk", COLUMN_SCAN_MASUK_KEY, type.stringType()).setStyle(style1).setWidth(90),
+                            col.column("Scan Pulang", COLUMN_SCAN_PULANG_KEY, type.stringType()).setStyle(style1).setWidth(90),
+                            col.column("Terlambat", COLUMN_TERLAMBAT_KEY, type.stringType()).setStyle(style1).setWidth(90),
+                            col.column("Lebih Awal", COLUMN_LEBIH_AWAL_KEY, type.stringType()).setStyle(style1).setWidth(90),
+                            col.column("Absen", COLUMN_ABSEN_KEY, type.stringType()).setStyle(style1).setWidth(90)
+                    )
+                    .setDataSource(generateDataSource(from, to))
                     .toPdf(outputStream);
             Util.showNotif("Sukses", "File absensi berhasil disimpan", NotificationType.SUCCESS);
         } catch (NullPointerException e) {
@@ -195,6 +233,25 @@ public class ScanLogController implements Initializable {
     @Subscribe
     public void onManagemenTimeEvent(ManagemenTimeEvent event) {
         this.timeManagement = event.getTimeManagement();
+    }
+
+    private class DatePickerPattern extends StringConverter<LocalDate> {
+        private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Constants.DATE_PATTERN);
+
+        @Override
+        public String toString(LocalDate localDate) {
+            if (localDate == null)
+                return "";
+            return dateTimeFormatter.format(localDate);
+        }
+
+        @Override
+        public LocalDate fromString(String dateString) {
+            if (dateString == null || dateString.trim().isEmpty()) {
+                return null;
+            }
+            return LocalDate.parse(dateString, dateTimeFormatter);
+        }
     }
 
 }
