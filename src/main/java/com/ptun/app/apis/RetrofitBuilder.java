@@ -1,6 +1,5 @@
 package com.ptun.app.apis;
 
-import com.ptun.app.eventbus.EventBus;
 import com.ptun.app.statics.Constants;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -15,7 +14,7 @@ public class RetrofitBuilder {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(Constants.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create(GsonConverter.getIt()))
+                    .addConverterFactory(GsonConverterFactory.create(GsonConverter.transform()))
                     .build();
         }
         return retrofit;

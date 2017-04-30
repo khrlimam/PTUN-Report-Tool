@@ -1,6 +1,5 @@
 package com.ptun.app.statics;
 
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.ptun.app.apis.GsonConverter;
@@ -11,10 +10,8 @@ import com.ptun.app.db.models.TimeManagement;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,7 +106,7 @@ public class DBUtil {
                 scan.add(sPin112Out);
             }
             data.put("Data", scan);
-            String scanlog = GsonConverter.getIt().toJson(data);
+            String scanlog = GsonConverter.transform().toJson(data);
             System.out.println(scanlog);
             fileWriter.write(scanlog);
             fileWriter.close();

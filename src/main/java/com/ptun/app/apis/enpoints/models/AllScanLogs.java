@@ -24,7 +24,7 @@ public class AllScanLogs {
 
     public static List<Scan> getLocalData() {
         return GsonConverter
-                .getIt()
+                .transform()
                 .fromJson(new InputStreamReader(AllScanLogs.class.getResourceAsStream("/dataexample/scanlog.json")), AllScanLogs.class).getData();
     }
 

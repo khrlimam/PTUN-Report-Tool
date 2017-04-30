@@ -9,7 +9,7 @@ import com.google.gson.GsonBuilder;
 public class GsonConverter {
     private static Gson gson;
 
-    public static Gson getIt() {
+    public static Gson transform() {
         if (gson == null)
             gson = new GsonBuilder().setPrettyPrinting().create();
         return gson;

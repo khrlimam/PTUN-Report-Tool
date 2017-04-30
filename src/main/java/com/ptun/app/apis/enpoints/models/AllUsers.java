@@ -24,7 +24,7 @@ public class AllUsers {
 
     public static List<User> getLocalData() {
         return GsonConverter
-                .getIt()
+                .transform()
                 .fromJson(new InputStreamReader(AllUsers.class.getResourceAsStream("/dataexample/users.json")), AllUsers.class).data;
     }
 
