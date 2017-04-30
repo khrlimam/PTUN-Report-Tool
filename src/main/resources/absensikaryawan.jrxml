@@ -23,27 +23,15 @@
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<subDataset name="ScanLogDataSource" uuid="69a5969a-f8e8-475e-829f-4af787005e12">
-		<parameter name="data" class="java.lang.String"/>
-		<queryString language="JSON">
-			<![CDATA[]]>
-		</queryString>
-		<field name="PIN" class="java.lang.String"/>
-		<field name="NAMA" class="java.lang.String"/>
-		<field name="TANGGAL" class="java.lang.String"/>
-		<field name="JAM_TUGAS" class="java.lang.String"/>
-		<field name="SELESAI_TUGAS" class="java.lang.String"/>
-		<field name="SCAN_MASUK" class="java.lang.String"/>
-		<field name="SCAN_PULANG" class="java.lang.String"/>
-		<field name="TERLAMBAT" class="java.lang.String"/>
-		<field name="LEBIH_AWAL" class="java.lang.String"/>
-		<field name="ABSEN" class="java.lang.String"/>
-	</subDataset>
+	<parameter name="logo" class="Object" isForPrompting="false">
+		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<pageHeader>
 		<band height="120" splitType="Stretch">
 			<image>
 				<reportElement x="151" y="0" width="107" height="97" uuid="cd53b36d-7675-4f00-81bc-f2d9eb6562f7"/>
-				<imageExpression><![CDATA["C:\\Users\\Lenovo\\javadev\\PTUN\\src\\main\\resources\\logo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="0" width="968" height="38" uuid="3a49b291-f40a-4d2a-be10-d977fb8f20e3"/>

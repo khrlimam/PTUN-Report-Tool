@@ -35,11 +35,10 @@ import net.sf.dynamicreports.report.constant.*;
 import net.sf.dynamicreports.report.exception.DRException;
 import tray.notification.NotificationType;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -177,6 +176,7 @@ public class ScanLogController implements Initializable {
             fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
             File file = fileChooser.showSaveDialog(App.PRIMARY_STAGE);
             OutputStream outputStream = new FileOutputStream(file);
+            BufferedImage image = ImageIO.read(getClass().getResource("/logo.png"));
             BorderBuilder border = stl.border();
             border
                     .setBottomPen(stl.penThin())
@@ -217,10 +217,13 @@ public class ScanLogController implements Initializable {
                             col.column("Absen", COLUMN_ABSEN_KEY, type.stringType()).setStyle(style1).setWidth(90)
                     )
                     .setDataSource(generateDataSource(from, to))
+                    .setParameter("logo", image)
                     .toPdf(outputStream);
             Util.showNotif("Sukses", "File absensi berhasil disimpan", NotificationType.SUCCESS);
         } catch (NullPointerException e) {
             Util.showNotif("Error", "Anda harus mendownload data terlebih dahulu", NotificationType.ERROR);
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
