@@ -1,6 +1,7 @@
 package com.ptun.app.controllers;
 
 import com.ptun.app.App;
+import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -18,8 +19,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        appSettingStage = Util.makeDialogStage(getClass().getResource("/appsettings.fxml"), "Pengaturan Aplikasi", App.PRIMARY_STAGE);
-        timeManagementStage = Util.makeDialogStage(getClass().getResource("/timemanagement.fxml"), "Managemen Waktu", App.PRIMARY_STAGE);
+        appSettingStage = Util.makeDialogStage(getClass().getResource(Constants.APP_SETTING_UI), "Pengaturan Aplikasi", App.PRIMARY_STAGE);
+        timeManagementStage = Util.makeDialogStage(getClass().getResource(Constants.MANAGEMEN_TIME_UI), "Managemen Waktu", App.PRIMARY_STAGE);
     }
 
     public void showFormAppSetting(ActionEvent actionEvent) {

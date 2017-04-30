@@ -7,6 +7,12 @@ import com.ptun.app.controllers.ScanLogController;
  * Created by Lenovo on 4/28/2017.
  */
 public class Constants {
+    public static final String MAIN_UI = "/main.fxml";
+    public static final String LOGIN_UI = "/login.fxml";
+    public static final String APP_SETTING_UI = "/appsettings.fxml";
+    public static final String MANAGEMEN_TIME_UI = "/timemanagement.fxml";
+    public static final String SCAN_LOG_UI = "/scanlog.fxml";
+
     public static final String BASE_URL = ScanLogController.BASE_URL;
     public static final String INIT_BASE_URL = "http://192.168.8.3:7005/";
     public static final String SN = "616385016280372";
