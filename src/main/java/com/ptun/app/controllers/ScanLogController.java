@@ -3,6 +3,7 @@ package com.ptun.app.controllers;
 import com.google.common.eventbus.Subscribe;
 import com.j256.ormlite.dao.Dao;
 import com.ptun.app.App;
+import com.ptun.app.apis.GsonConverter;
 import com.ptun.app.apis.enpoints.models.AllScanLogs;
 import com.ptun.app.apis.enpoints.models.AllUsers;
 import com.ptun.app.apis.enpoints.models.Scan;
@@ -36,6 +37,7 @@ import net.sf.dynamicreports.report.exception.DRException;
 import tray.notification.NotificationType;
 
 import javax.imageio.ImageIO;
+import javax.xml.bind.SchemaOutputResolver;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -129,12 +131,13 @@ public class ScanLogController implements Initializable {
         try {
             TreeSet<String> sortedDate = new TreeSet<>(keys);
             sortedDate.stream().forEach(date -> {
-                Map value = new HashMap();
                 grouped.get(date).entrySet().stream().forEach(stringListEntry -> {
+                    Map value = new HashMap();
                     Scan scanInOfCurrentUser = stringListEntry.getValue().stream().filter(scan -> scan.getIOMode() == 1).findAny().orElse(new Scan());
                     Scan scanOutOfCurrentUser = stringListEntry.getValue().stream().filter(scan -> scan.getIOMode() == 2).findAny().orElse(new Scan());
-                    User user = getDataUserOperations().findByPIN(stringListEntry.getKey());
-                    value.put(COLUMN_PIN_KEY, stringListEntry.getKey());
+                    String PIN = stringListEntry.getKey();
+                    User user = getDataUserOperations().findByPIN(PIN);
+                    value.put(COLUMN_PIN_KEY, PIN);
                     value.put(COLUMN_NAMA_KEY, user.getName());
                     value.put(COLUMN_TANGGAL_KEY, date);
                     value.put(COLUMN_JAM_TUGAS_KEY, timeManagement.getOnDuty().getTime());
@@ -144,8 +147,8 @@ public class ScanLogController implements Initializable {
                     value.put(COLUMN_TERLAMBAT_KEY, scanInOfCurrentUser.getLate(timeManagement.getLateTolerance(), timeManagement.getOnDuty().getTime()));
                     value.put(COLUMN_LEBIH_AWAL_KEY, scanOutOfCurrentUser.getEarly(timeManagement.getEarlyTolerance(), timeManagement.getOffDuty().getTime()));
                     value.put(COLUMN_ABSEN_KEY, scanInOfCurrentUser.getAbsen());
+                    data.add(value);
                 });
-                data.add(value);
             });
         } catch (NullPointerException e) {
             Util.showNotif("Error", "Silahkan ambil data dari mesin terlebih dahulu!", NotificationType.ERROR);
