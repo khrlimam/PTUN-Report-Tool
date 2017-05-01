@@ -3,11 +3,10 @@ package com.ptun.app.controllers;
 import com.google.common.eventbus.Subscribe;
 import com.j256.ormlite.dao.Dao;
 import com.ptun.app.App;
-import com.ptun.app.apis.GsonConverter;
-import com.ptun.app.apis.enpoints.models.AllScanLogs;
-import com.ptun.app.apis.enpoints.models.AllUsers;
-import com.ptun.app.apis.enpoints.models.Scan;
-import com.ptun.app.apis.enpoints.models.User;
+import com.ptun.app.apis.endpoints.models.AllScanLogs;
+import com.ptun.app.apis.endpoints.models.AllUsers;
+import com.ptun.app.apis.endpoints.models.Scan;
+import com.ptun.app.apis.endpoints.models.User;
 import com.ptun.app.controllers.dataoperations.DataScanLogOperations;
 import com.ptun.app.controllers.dataoperations.DataUserOperations;
 import com.ptun.app.db.models.AppSettings;
@@ -16,6 +15,7 @@ import com.ptun.app.enums.PEGAWAI_CHOICES;
 import com.ptun.app.eventbus.EventBus;
 import com.ptun.app.eventbus.events.AppSettingEvent;
 import com.ptun.app.eventbus.events.ManagemenTimeEvent;
+import com.ptun.app.eventbus.events.NewUserEvent;
 import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.Util;
 import javafx.collections.FXCollections;
@@ -103,7 +103,7 @@ public class ScanLogController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         EventBus.getDefault().register(this);
-        BASE_URL = appSettings.getURL();
+        Constants.BASE_URL = appSettings.getURL();
         setUpTableColumns();
         setupCbPegawai();
         dpDari.setConverter(new DatePickerPattern());
@@ -154,7 +154,7 @@ public class ScanLogController implements Initializable {
                         Scan scanOutOfCurrentUser = stringListEntry.getValue().stream().filter(scan -> scan.getIOMode() == Constants.SCAN_OUT).findAny().orElse(new Scan());
                         String PIN = stringListEntry.getKey();
                         User user = getDataUserOperations().findByPIN(PIN);
-                        com.ptun.app.db.models.User getUserByPinFromDB = users.stream().filter(user1 -> user1.getPIN() == Integer.parseInt(PIN)).findAny().get();
+                        com.ptun.app.db.models.User getUserByPinFromDB = users.stream().filter(user1 -> user1.getPIN() == Integer.parseInt(PIN)).findAny().orElse(new com.ptun.app.db.models.User());
                         value.put(COLUMN_PIN_KEY, PIN);
                         value.put(COLUMN_NAMA_KEY, user.getName());
                         value.put(COLUMN_JABATAN_KEY, getUserByPinFromDB.getJabatan());
@@ -175,7 +175,6 @@ public class ScanLogController implements Initializable {
                             data.add(value);
                     }));
         } catch (NullPointerException e) {
-            Util.showNotif("Error", "Silahkan ambil data dari mesin terlebih dahulu!", NotificationType.ERROR);
             e.printStackTrace();
         }
         return data;
@@ -233,7 +232,7 @@ public class ScanLogController implements Initializable {
                     .setColumnTitleStyle(stl.templateStyle("columnTitleStyle"))
                     .setTemplateDesign(getClass().getClassLoader().getResource("absensikaryawan.jrxml"))
                     .columns(
-                            col.column("PIN", COLUMN_PIN_KEY, type.stringType()).setStyle(style1).setWidth(45),
+                            col.column("PIN", COLUMN_PIN_KEY, type.stringType()).setStyle(style1),
                             col.column("Nama", COLUMN_NAMA_KEY, type.stringType()).setStyle(style1).setWidth(162),
                             col.column("Jabatan", COLUMN_JABATAN_KEY, type.stringType()).setStyle(style1),
                             col.column("Tanggal", COLUMN_TANGGAL_KEY, type.stringType()).setStyle(style1),
@@ -265,6 +264,11 @@ public class ScanLogController implements Initializable {
     @Subscribe
     public void onManagemenTimeEvent(ManagemenTimeEvent event) {
         this.timeManagement = event.getTimeManagement();
+    }
+
+    @Subscribe
+    public void onNewUser(NewUserEvent event) {
+        getUsers().add(event.getUser());
     }
 
     private class DatePickerPattern extends StringConverter<LocalDate> {

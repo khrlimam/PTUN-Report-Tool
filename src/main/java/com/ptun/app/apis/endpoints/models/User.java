@@ -1,4 +1,4 @@
-package com.ptun.app.apis.enpoints.models;
+package com.ptun.app.apis.endpoints.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

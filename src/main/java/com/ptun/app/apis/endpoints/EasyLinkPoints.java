@@ -1,9 +1,9 @@
-package com.ptun.app.apis.enpoints;
+package com.ptun.app.apis.endpoints;
 
 import com.ptun.app.apis.RetrofitBuilder;
-import com.ptun.app.apis.enpoints.models.AllScanLogs;
-import com.ptun.app.apis.enpoints.models.AllUsers;
-import com.ptun.app.apis.enpoints.models.Result;
+import com.ptun.app.apis.endpoints.models.AllScanLogs;
+import com.ptun.app.apis.endpoints.models.AllUsers;
+import com.ptun.app.apis.endpoints.models.Result;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

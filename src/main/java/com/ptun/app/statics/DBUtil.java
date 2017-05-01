@@ -3,7 +3,7 @@ package com.ptun.app.statics;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.ptun.app.apis.GsonConverter;
-import com.ptun.app.apis.enpoints.models.Scan;
+import com.ptun.app.apis.endpoints.models.Scan;
 import com.ptun.app.db.DB;
 import com.ptun.app.db.models.AppSettings;
 import com.ptun.app.db.models.Time;
@@ -76,8 +76,7 @@ public class DBUtil {
 
     public static void resetDB() {
         migrateDown();
-        migrateUp();
-        initData();
+        bootUpDB();
     }
 
     public static void bootUpDB() {
@@ -88,7 +87,6 @@ public class DBUtil {
     public static void initData() {
         initSettingData();
         initTimeManagementData();
-        generateDummyDBUserData();
     }
 
     public static void generateDummyData() {
@@ -101,11 +99,11 @@ public class DBUtil {
         User userPin2 = new User();
         User userPin3 = new User();
 
-        userPin1.setPIN(1);
+        userPin1.setPIN(999999991);
         userPin1.setJabatan(PEGAWAI_CHOICES.HAKIM.name());
-        userPin2.setPIN(2);
+        userPin2.setPIN(999999992);
         userPin2.setJabatan(PEGAWAI_CHOICES.STAFF.name());
-        userPin3.setPIN(3);
+        userPin3.setPIN(999999993);
         userPin3.setJabatan(PEGAWAI_CHOICES.STAFF.name());
         try {
             User.getDao().createIfNotExists(userPin1);
@@ -141,12 +139,12 @@ public class DBUtil {
 
                 dateTime = dateTime.plusDays(1);
 
-                sPin111In.setPIN("1");
-                sPin111Out.setPIN("1");
-                sPin112In.setPIN("2");
-                sPin112Out.setPIN("2");
-                sPin113In.setPIN("3");
-                sPin113Out.setPIN("3");
+                sPin111In.setPIN("999999991");
+                sPin111Out.setPIN("999999991");
+                sPin112In.setPIN("999999992");
+                sPin112Out.setPIN("999999992");
+                sPin113In.setPIN("999999993");
+                sPin113Out.setPIN("999999993");
 
                 sPin111In.setWorkCode(1);
                 sPin111Out.setWorkCode(1);

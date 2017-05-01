@@ -1,4 +1,4 @@
-package com.ptun.app.apis.enpoints.models;
+package com.ptun.app.apis.endpoints.models;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.ptun.app.apis.GsonConverter;
-import com.ptun.app.apis.enpoints.EasyLinkPoints;
+import com.ptun.app.apis.endpoints.EasyLinkPoints;
 import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.Util;
 import lombok.Data;

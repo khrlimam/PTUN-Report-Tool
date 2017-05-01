@@ -16,10 +16,7 @@ public class Constants {
     public static final String SCAN_LOG_UI = "/scanlog.fxml";
     public static final String ADD_USER_UI = "/adduser.fxml";
 
-    public static String[] PEGAWAI = {"HAKIM", "STAFF"};
-
-    public static final String BASE_URL = ScanLogController.BASE_URL;
-    public static final String INIT_BASE_URL = "http://192.168.8.3:7005/";
+    public static String BASE_URL = "http://192.168.8.3:7005/";
     public static final String SN = "616385016280372";
     public static final String DB_NAME = "ptunmataram";
     public static final String APP_NAME = "PTUN Report Tool";
@@ -34,4 +31,5 @@ public class Constants {
     public static final long minutesInMilli = secondsInMilli * 60;
     public static final long hoursInMilli = minutesInMilli * 60;
     public static final long daysInMilli = hoursInMilli * 24;
+
 }

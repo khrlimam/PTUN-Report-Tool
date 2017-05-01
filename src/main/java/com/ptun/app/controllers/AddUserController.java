@@ -1,15 +1,18 @@
 package com.ptun.app.controllers;
 
 import com.j256.ormlite.dao.Dao;
-import com.ptun.app.apis.enpoints.EasyLinkPoints;
+import com.ptun.app.apis.endpoints.EasyLinkPoints;
 import com.ptun.app.customui.NumberTextField;
 import com.ptun.app.db.models.User;
 import com.ptun.app.enums.PEGAWAI_CHOICES;
+import com.ptun.app.eventbus.EventBus;
+import com.ptun.app.eventbus.events.NewUserEvent;
 import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -30,7 +33,7 @@ public class AddUserController implements Initializable {
     @FXML
     private TextField tfNama;
     @FXML
-    private NumberTextField tfPIN;
+    private NumberTextField tfPassword;
     @FXML
     private RadioButton rbHakim, rbStaff;
 
@@ -53,14 +56,23 @@ public class AddUserController implements Initializable {
     private void addUser(ActionEvent actionEvent) {
         try {
             User newUser = new User();
-            newUser.setPIN(Integer.parseInt(getTfPIN().getText()));
             newUser.setJabatan(getPegawai().getText());
-            boolean result = EasyLinkPoints.getClient().addNewUser(Constants.SN, newUser.getPIN(), tfNama.getText(), 0, 0, 0, "").execute().body().isResult();
+            dao.create(newUser);
+            System.out.println("created user " + newUser);
+            boolean result = EasyLinkPoints.getClient().addNewUser(Constants.SN, newUser.getPIN(), tfNama.getText(), Integer.parseInt(tfPassword.getText()), 0, 0, Util.getTemplateForPin(newUser.getPIN())).execute().body().isResult();
             if (result) {
-                dao.create(newUser);
-                Util.showNotif("Sukses", "Pegawai baru berhasil ditambahkan", NotificationType.SUCCESS);
-            } else
+                String message = String.format("%s baru berhasil ditambahkan. Silahkan tambahkan sidik jari baru untuk user:" +
+                        "\nNama: %s" +
+                        "\nPIN: %d" +
+                        "\n\nSelalu ingat untuk menambahkan sidik jari untuk user yang baru didaftarkan!", newUser.getJabatan(), getTfNama().getText(), newUser.getPIN());
+                Alert alert = Util.setUpDialog("Sukses", "Berhasil menambahkan user baru", message, Alert.AlertType.INFORMATION);
+                alert.showAndWait();
+                resetForm();
+                EventBus.getDefault().post(new NewUserEvent(newUser));
+            } else {
+                dao.delete(newUser);
                 Util.showNotif("Error", "User gagal ditambahkan!", NotificationType.ERROR);
+            }
         } catch (NullPointerException e) {
             Util.showNotif("Error", String.format("Ada kesalahan %s", e.getMessage()), NotificationType.ERROR);
             e.printStackTrace();
@@ -73,4 +85,11 @@ public class AddUserController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void resetForm() {
+        tfNama.setText("");
+        tfPassword.setText("");
+        getRbJabatanGroup().getSelectedToggle().setSelected(false);
+    }
+
 }

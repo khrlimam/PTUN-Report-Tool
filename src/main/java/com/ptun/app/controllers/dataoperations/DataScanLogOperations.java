@@ -1,10 +1,8 @@
 package com.ptun.app.controllers.dataoperations;
 
-import com.ptun.app.apis.enpoints.models.Scan;
-import com.ptun.app.apis.enpoints.models.User;
+import com.ptun.app.apis.endpoints.models.Scan;
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

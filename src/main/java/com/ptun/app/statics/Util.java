@@ -2,6 +2,7 @@ package com.ptun.app.statics;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -43,9 +44,14 @@ public class Util {
         return dt;
     }
 
-    public static void showNotif(String title, String message, NotificationType type) {
+    public static TrayNotification setUpNotif(String title, String message, NotificationType type) {
         TrayNotification tray = new TrayNotification(title, message, type);
         tray.setAnimationType(AnimationType.POPUP);
+        return tray;
+    }
+
+    public static void showNotif(String title, String message, NotificationType type) {
+        TrayNotification tray = setUpNotif(title, message, type);
         tray.showAndDismiss(Duration.seconds(1));
     }
 
@@ -66,6 +72,18 @@ public class Util {
         elapsedMinutes = (elapsedMinutes < 0) ? 0 : elapsedMinutes;
 
         return String.format("%d:%d", elapsedHours, elapsedMinutes);
+    }
+
+    public static Alert setUpDialog(String title, String header, String content, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        return alert;
+    }
+
+    public static String getTemplateForPin(int pin) {
+        return String.format("[{\"pin\": \"%d\",\"idx\": 0,\"alg_ver\": 39,\"template\": \"\"}]", pin);
     }
 
 }
