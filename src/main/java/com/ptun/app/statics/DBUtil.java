@@ -77,9 +77,22 @@ public class DBUtil {
     public static void resetDB() {
         migrateDown();
         migrateUp();
+        initData();
+    }
+
+    public static void bootUpDB() {
+        migrateUp();
+        initData();
+    }
+
+    public static void initData() {
         initSettingData();
         initTimeManagementData();
+    }
+
+    public static void generateDummyData() {
         generateDummyDBUserData();
+        generateScanLogJsonData();
     }
 
     public static void generateDummyDBUserData() {
@@ -164,7 +177,6 @@ public class DBUtil {
             }
             data.put("Data", scan);
             String scanlog = GsonConverter.transform().toJson(data);
-            System.out.println(scanlog);
             fileWriter.write(scanlog);
             fileWriter.close();
         } catch (IOException e) {

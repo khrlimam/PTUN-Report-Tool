@@ -32,7 +32,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException, DRException {
         this.PRIMARY_STAGE = primaryStage;
-        DBUtil.migrateUp();
+        DBUtil.bootUpDB();
         Parent root = FXMLLoader.load(getClass().getResource(MAIN_UI));
         primaryStage.setTitle(Constants.APP_NAME);
         primaryStage.setScene(new Scene(root));
