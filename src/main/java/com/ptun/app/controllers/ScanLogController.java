@@ -12,6 +12,7 @@ import com.ptun.app.controllers.dataoperations.DataScanLogOperations;
 import com.ptun.app.controllers.dataoperations.DataUserOperations;
 import com.ptun.app.db.models.AppSettings;
 import com.ptun.app.db.models.TimeManagement;
+import com.ptun.app.enums.PEGAWAI_CHOICES;
 import com.ptun.app.eventbus.EventBus;
 import com.ptun.app.eventbus.events.AppSettingEvent;
 import com.ptun.app.eventbus.events.ManagemenTimeEvent;
@@ -21,6 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -83,6 +85,9 @@ public class ScanLogController implements Initializable {
     private DatePicker dpDari, dpSampai;
 
     @FXML
+    private ChoiceBox cbPegawai;
+
+    @FXML
     private TableColumn<Map, String> cPin, cNama, cTgl, cJamTugas,
             cJamSelesaiTugas, cScanMasuk, cScanPulang, cTerlambat,
             cLebihAwal, cAbsen;
@@ -98,8 +103,14 @@ public class ScanLogController implements Initializable {
         EventBus.getDefault().register(this);
         BASE_URL = appSettings.getURL();
         setUpTableColumns();
+        setupCbPegawai();
         dpDari.setConverter(new DatePickerPattern());
         dpSampai.setConverter(new DatePickerPattern());
+    }
+
+    private void setupCbPegawai() {
+        cbPegawai.setItems(FXCollections.observableArrayList(PEGAWAI_CHOICES.values()));
+        cbPegawai.getSelectionModel().selectFirst();
     }
 
     private void setUpTableColumns() {
@@ -133,8 +144,8 @@ public class ScanLogController implements Initializable {
             sortedDate.stream().forEach(date -> {
                 grouped.get(date).entrySet().stream().forEach(stringListEntry -> {
                     Map value = new HashMap();
-                    Scan scanInOfCurrentUser = stringListEntry.getValue().stream().filter(scan -> scan.getIOMode() == 1).findAny().orElse(new Scan());
-                    Scan scanOutOfCurrentUser = stringListEntry.getValue().stream().filter(scan -> scan.getIOMode() == 2).findAny().orElse(new Scan());
+                    Scan scanInOfCurrentUser = stringListEntry.getValue().stream().filter(scan -> scan.getIOMode() == Constants.SCAN_IN).findAny().orElse(new Scan());
+                    Scan scanOutOfCurrentUser = stringListEntry.getValue().stream().filter(scan -> scan.getIOMode() == Constants.SCAN_OUT).findAny().orElse(new Scan());
                     String PIN = stringListEntry.getKey();
                     User user = getDataUserOperations().findByPIN(PIN);
                     value.put(COLUMN_PIN_KEY, PIN);

@@ -1,6 +1,7 @@
 package com.ptun.app.controllers.dataoperations;
 
 import com.ptun.app.apis.enpoints.models.User;
+import com.ptun.app.enums.PEGAWAI_CHOICES;
 import lombok.Data;
 
 import java.util.List;
@@ -21,5 +22,4 @@ public class DataUserOperations {
                 .stream()
                 .filter(user -> user.getPIN().equalsIgnoreCase(PIN)).findAny().get();
     }
-
 }

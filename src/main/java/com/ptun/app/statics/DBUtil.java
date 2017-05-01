@@ -95,10 +95,10 @@ public class DBUtil {
                 sPin112In.setVerifyMode(1);
                 sPin112Out.setVerifyMode(1);
 
-                sPin111In.setIOMode(1);
-                sPin111Out.setIOMode(2);
-                sPin112In.setIOMode(1);
-                sPin112Out.setIOMode(2);
+                sPin111In.setIOMode(Constants.SCAN_IN);
+                sPin111Out.setIOMode(Constants.SCAN_OUT);
+                sPin112In.setIOMode(Constants.SCAN_IN);
+                sPin112Out.setIOMode(Constants.SCAN_OUT);
 
                 scan.add(sPin111In);
                 scan.add(sPin111Out);

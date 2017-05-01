@@ -23,6 +23,8 @@ public class Constants {
     public static final String HOUR_MINUTE_PATTERN = "HH:mm";
     public static final String DATE_TIME_PATTERN = String.format("%s %s", DATE_PATTERN, TIME_PATTERN);
     public static final int SETTING_ID = 1;
+    public static final int SCAN_IN = 1;
+    public static final int SCAN_OUT = 2;
     public static final long secondsInMilli = 1000;
     public static final long minutesInMilli = secondsInMilli * 60;
     public static final long hoursInMilli = minutesInMilli * 60;

@@ -5,6 +5,7 @@ package com.ptun.app;
  */
 
 import com.ptun.app.controllers.LoginModalController;
+import com.ptun.app.enums.PEGAWAI_CHOICES;
 import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.DBUtil;
 import javafx.application.Application;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 import net.sf.dynamicreports.report.exception.DRException;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static com.ptun.app.statics.Constants.LOGIN_UI;
 import static com.ptun.app.statics.Constants.MAIN_UI;

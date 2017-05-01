@@ -79,11 +79,6 @@
             <artifactId>dynamicreports-core</artifactId>
             <version>5.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.fatboyindustrial.gson-jodatime-serialisers</groupId>
-            <artifactId>gson-jodatime-serialisers</artifactId>
-            <version>1.6.0</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
