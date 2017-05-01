@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -14,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="576.0" prefWidth="800.0" stylesheets="main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ptun.app.controllers.ScanLogController">
+<VBox prefHeight="576.0" prefWidth="728.0" stylesheets="main.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ptun.app.controllers.ScanLogController">
     <children>
         <HBox stylesheets="@main.css">
             <children>
@@ -30,14 +27,14 @@
                         <Insets right="10.0" />
                     </HBox.margin>
                 </DatePicker>
-            <ChoiceBox fx:id="cbPegawai" minWidth="100.0" prefWidth="100.0">
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin>
-            </ChoiceBox>
-                <Button mnemonicParsing="false" onAction="#showReport" prefHeight="25.0" prefWidth="95.0" styleClass="btn-success" text="Lihat" />
+                <ChoiceBox fx:id="cbPegawai" minWidth="100.0" prefWidth="100.0">
+                    <HBox.margin>
+                        <Insets right="10.0" />
+                    </HBox.margin>
+                </ChoiceBox>
+                <Button minWidth="90.0" mnemonicParsing="false" onAction="#showReport" prefHeight="25.0" prefWidth="60.0" styleClass="btn-success" text="Ambil Data" />
                 <Pane prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                <Button mnemonicParsing="false" onAction="#downloadReport" prefHeight="25.0" prefWidth="160.0" styleClass="btn-info" text="Simpan Laporan" textFill="WHITE">
+                <Button minWidth="120.0" mnemonicParsing="false" onAction="#downloadReport" prefHeight="25.0" prefWidth="160.0" styleClass="btn-info" text="Simpan Laporan" textFill="WHITE">
                     <HBox.margin>
                         <Insets right="3.0" />
                     </HBox.margin>
@@ -48,6 +45,7 @@
             <columns>
                 <TableColumn fx:id="cPin" prefWidth="45.0" style="-fx-alignment: center" text="PIN" />
                 <TableColumn fx:id="cNama" prefWidth="200.0" text="Nama" />
+                <TableColumn fx:id="cJabatan" prefWidth="75.0" style="-fx-alignment: center" text="Jabatan" />
                 <TableColumn fx:id="cTgl" style="-fx-alignment: center" text="Tanggal" />
                 <TableColumn fx:id="cJamTugas" prefWidth="81.0" style="-fx-alignment: center" text="Jam Tugas" />
                 <TableColumn fx:id="cJamSelesaiTugas" prefWidth="97.0" style="-fx-alignment: center" text="Selesai Tugas" />

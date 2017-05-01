@@ -23,9 +23,10 @@
                 </Pane>
                 <ToolBar>
                     <items>
+                  <Button mnemonicParsing="false" onAction="#showFormAddUser" styleClass="btn-primary" text="Tambah User" />
+                        <Pane HBox.hgrow="ALWAYS" />
                         <Button fx:id="btnTambahPasien" mnemonicParsing="false" onAction="#showFormAppSetting" styleClass="btn-primary" text="Pengaturan Aplikasi" />
                   <Button fx:id="btnTambahPasien1" mnemonicParsing="false" onAction="#showFormTimeManagement" styleClass="btn-primary" text="Managemen Waktu" />
-                        <Pane HBox.hgrow="ALWAYS" />
                     </items>
                 </ToolBar>
                 <Pane />

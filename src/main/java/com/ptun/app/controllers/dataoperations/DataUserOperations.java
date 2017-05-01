@@ -22,4 +22,5 @@ public class DataUserOperations {
                 .stream()
                 .filter(user -> user.getPIN().equalsIgnoreCase(PIN)).findAny().get();
     }
+
 }

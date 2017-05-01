@@ -3,6 +3,8 @@ package com.ptun.app.statics;
 import com.ptun.app.apis.RetrofitBuilder;
 import com.ptun.app.controllers.ScanLogController;
 
+import java.net.URL;
+
 /**
  * Created by Lenovo on 4/28/2017.
  */
@@ -12,6 +14,9 @@ public class Constants {
     public static final String APP_SETTING_UI = "/appsettings.fxml";
     public static final String MANAGEMEN_TIME_UI = "/timemanagement.fxml";
     public static final String SCAN_LOG_UI = "/scanlog.fxml";
+    public static final String ADD_USER_UI = "/adduser.fxml";
+
+    public static String[] PEGAWAI = {"HAKIM", "STAFF"};
 
     public static final String BASE_URL = ScanLogController.BASE_URL;
     public static final String INIT_BASE_URL = "http://192.168.8.3:7005/";

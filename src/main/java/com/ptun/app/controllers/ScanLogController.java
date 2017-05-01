@@ -3,7 +3,6 @@ package com.ptun.app.controllers;
 import com.google.common.eventbus.Subscribe;
 import com.j256.ormlite.dao.Dao;
 import com.ptun.app.App;
-import com.ptun.app.apis.GsonConverter;
 import com.ptun.app.apis.enpoints.models.AllScanLogs;
 import com.ptun.app.apis.enpoints.models.AllUsers;
 import com.ptun.app.apis.enpoints.models.Scan;
@@ -32,15 +31,15 @@ import javafx.util.StringConverter;
 import lombok.Data;
 import net.sf.dynamicreports.report.builder.ReportTemplateBuilder;
 import net.sf.dynamicreports.report.builder.style.BorderBuilder;
-import net.sf.dynamicreports.report.builder.style.PenBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
-import net.sf.dynamicreports.report.constant.*;
+import net.sf.dynamicreports.report.constant.HorizontalAlignment;
+import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.VerticalAlignment;
+import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.exception.DRException;
 import tray.notification.NotificationType;
 
 import javax.imageio.ImageIO;
-import javax.xml.bind.SchemaOutputResolver;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
@@ -48,7 +47,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
@@ -61,7 +59,10 @@ public class ScanLogController implements Initializable {
 
     private DataUserOperations dataUserOperations;
     private DataScanLogOperations dataScanLogOperations;
+    private Dao<com.ptun.app.db.models.User, Integer> userDao = com.ptun.app.db.models.User.getDao();
+    private List<com.ptun.app.db.models.User> users = userDao.queryForAll();
 
+    private static final String COLUMN_JABATAN_KEY = "JABATAN";
     private static final String COLUMN_PIN_KEY = "PIN";
     private static final String COLUMN_NAMA_KEY = "NAMA";
     private static final String COLUMN_TANGGAL_KEY = "TANGGAL";
@@ -85,12 +86,12 @@ public class ScanLogController implements Initializable {
     private DatePicker dpDari, dpSampai;
 
     @FXML
-    private ChoiceBox cbPegawai;
+    private ChoiceBox<String> cbPegawai;
 
     @FXML
     private TableColumn<Map, String> cPin, cNama, cTgl, cJamTugas,
             cJamSelesaiTugas, cScanMasuk, cScanPulang, cTerlambat,
-            cLebihAwal, cAbsen;
+            cLebihAwal, cAbsen, cJabatan;
 
     @FXML
     private TableView tblScanLog;
@@ -109,13 +110,17 @@ public class ScanLogController implements Initializable {
     }
 
     private void setupCbPegawai() {
-        cbPegawai.setItems(FXCollections.observableArrayList(PEGAWAI_CHOICES.values()));
+        ObservableList choices = FXCollections.observableArrayList();
+        choices.add("SEMUA");
+        choices.addAll(Arrays.stream(PEGAWAI_CHOICES.values()).map(pegawai_choices -> pegawai_choices.name()).collect(Collectors.toList()));
+        cbPegawai.setItems(choices);
         cbPegawai.getSelectionModel().selectFirst();
     }
 
     private void setUpTableColumns() {
         cPin.setCellValueFactory(new MapValueFactory<>(COLUMN_PIN_KEY));
         cNama.setCellValueFactory(new MapValueFactory<>(COLUMN_NAMA_KEY));
+        cJabatan.setCellValueFactory(new MapValueFactory<>(COLUMN_JABATAN_KEY));
         cTgl.setCellValueFactory(new MapValueFactory<>(COLUMN_TANGGAL_KEY));
         cJamTugas.setCellValueFactory(new MapValueFactory<>(COLUMN_JAM_TUGAS_KEY));
         cJamSelesaiTugas.setCellValueFactory(new MapValueFactory<>(COLUMN_SELESAI_TUGAS_KEY));
@@ -132,35 +137,42 @@ public class ScanLogController implements Initializable {
         List<User> users = AllUsers.getLocalData();
         this.dataScanLogOperations = new DataScanLogOperations(scanLogs);
         this.dataUserOperations = new DataUserOperations(users);
-        tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText()));
+        tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
     }
 
-    private ObservableList<Map> generateDataSource(String from, String to) {
+    private ObservableList<Map> generateDataSource(String from, String to, String jabatan) {
         ObservableList<Map> data = FXCollections.observableArrayList();
         Map<String, Map<String, List<Scan>>> grouped = this.dataScanLogOperations.groupByDateAndPIN();
         Set<String> keys = getKeysBetween(grouped.keySet(), from, to);
         try {
             TreeSet<String> sortedDate = new TreeSet<>(keys);
-            sortedDate.stream().forEach(date -> {
-                grouped.get(date).entrySet().stream().forEach(stringListEntry -> {
-                    Map value = new HashMap();
-                    Scan scanInOfCurrentUser = stringListEntry.getValue().stream().filter(scan -> scan.getIOMode() == Constants.SCAN_IN).findAny().orElse(new Scan());
-                    Scan scanOutOfCurrentUser = stringListEntry.getValue().stream().filter(scan -> scan.getIOMode() == Constants.SCAN_OUT).findAny().orElse(new Scan());
-                    String PIN = stringListEntry.getKey();
-                    User user = getDataUserOperations().findByPIN(PIN);
-                    value.put(COLUMN_PIN_KEY, PIN);
-                    value.put(COLUMN_NAMA_KEY, user.getName());
-                    value.put(COLUMN_TANGGAL_KEY, date);
-                    value.put(COLUMN_JAM_TUGAS_KEY, timeManagement.getOnDuty().getTime());
-                    value.put(COLUMN_SELESAI_TUGAS_KEY, timeManagement.getOffDuty().getTime());
-                    value.put(COLUMN_SCAN_MASUK_KEY, scanInOfCurrentUser.getScanTime());
-                    value.put(COLUMN_SCAN_PULANG_KEY, scanOutOfCurrentUser.getScanTime());
-                    value.put(COLUMN_TERLAMBAT_KEY, scanInOfCurrentUser.getLate(timeManagement.getLateTolerance(), timeManagement.getOnDuty().getTime()));
-                    value.put(COLUMN_LEBIH_AWAL_KEY, scanOutOfCurrentUser.getEarly(timeManagement.getEarlyTolerance(), timeManagement.getOffDuty().getTime()));
-                    value.put(COLUMN_ABSEN_KEY, scanInOfCurrentUser.getAbsen());
-                    data.add(value);
-                });
-            });
+            sortedDate.stream().forEach(date ->
+                    grouped.get(date).entrySet().stream().forEach(stringListEntry -> {
+                        Map value = new HashMap();
+                        Scan scanInOfCurrentUser = stringListEntry.getValue().stream().filter(scan -> scan.getIOMode() == Constants.SCAN_IN).findAny().orElse(new Scan());
+                        Scan scanOutOfCurrentUser = stringListEntry.getValue().stream().filter(scan -> scan.getIOMode() == Constants.SCAN_OUT).findAny().orElse(new Scan());
+                        String PIN = stringListEntry.getKey();
+                        User user = getDataUserOperations().findByPIN(PIN);
+                        com.ptun.app.db.models.User getUserByPinFromDB = users.stream().filter(user1 -> user1.getPIN() == Integer.parseInt(PIN)).findAny().get();
+                        value.put(COLUMN_PIN_KEY, PIN);
+                        value.put(COLUMN_NAMA_KEY, user.getName());
+                        value.put(COLUMN_JABATAN_KEY, getUserByPinFromDB.getJabatan());
+                        value.put(COLUMN_TANGGAL_KEY, date);
+                        value.put(COLUMN_JAM_TUGAS_KEY, timeManagement.getOnDuty().getTime());
+                        value.put(COLUMN_SELESAI_TUGAS_KEY, timeManagement.getOffDuty().getTime());
+                        value.put(COLUMN_SCAN_MASUK_KEY, scanInOfCurrentUser.getScanTime());
+                        value.put(COLUMN_SCAN_PULANG_KEY, scanOutOfCurrentUser.getScanTime());
+                        value.put(COLUMN_TERLAMBAT_KEY, scanInOfCurrentUser.getLate(timeManagement.getLateTolerance(), timeManagement.getOnDuty().getTime()));
+                        value.put(COLUMN_LEBIH_AWAL_KEY, scanOutOfCurrentUser.getEarly(timeManagement.getEarlyTolerance(), timeManagement.getOffDuty().getTime()));
+                        value.put(COLUMN_ABSEN_KEY, scanInOfCurrentUser.getAbsen());
+
+                        if (!jabatan.equalsIgnoreCase(PEGAWAI_CHOICES.HAKIM.name()) &&
+                                !jabatan.equalsIgnoreCase(PEGAWAI_CHOICES.STAFF.name()))
+                            data.add(value);
+
+                        else if (jabatan.equalsIgnoreCase(getUserByPinFromDB.getJabatan()))
+                            data.add(value);
+                    }));
         } catch (NullPointerException e) {
             Util.showNotif("Error", "Silahkan ambil data dari mesin terlebih dahulu!", NotificationType.ERROR);
             e.printStackTrace();
@@ -222,16 +234,17 @@ public class ScanLogController implements Initializable {
                     .columns(
                             col.column("PIN", COLUMN_PIN_KEY, type.stringType()).setStyle(style1).setWidth(45),
                             col.column("Nama", COLUMN_NAMA_KEY, type.stringType()).setStyle(style1).setWidth(162),
-                            col.column("Tanggal", COLUMN_TANGGAL_KEY, type.stringType()).setStyle(style1).setWidth(90),
-                            col.column("Jam Tugas", COLUMN_JAM_TUGAS_KEY, type.stringType()).setStyle(style1).setWidth(90),
-                            col.column("Selesai Tugas", COLUMN_SELESAI_TUGAS_KEY, type.stringType()).setStyle(style1).setWidth(90),
-                            col.column("Scan Masuk", COLUMN_SCAN_MASUK_KEY, type.stringType()).setStyle(style1).setWidth(90),
-                            col.column("Scan Pulang", COLUMN_SCAN_PULANG_KEY, type.stringType()).setStyle(style1).setWidth(90),
-                            col.column("Terlambat", COLUMN_TERLAMBAT_KEY, type.stringType()).setStyle(style1).setWidth(90),
-                            col.column("Lebih Awal", COLUMN_LEBIH_AWAL_KEY, type.stringType()).setStyle(style1).setWidth(90),
-                            col.column("Absen", COLUMN_ABSEN_KEY, type.stringType()).setStyle(style1).setWidth(90)
+                            col.column("Jabatan", COLUMN_JABATAN_KEY, type.stringType()).setStyle(style1),
+                            col.column("Tanggal", COLUMN_TANGGAL_KEY, type.stringType()).setStyle(style1),
+                            col.column("Jam Tugas", COLUMN_JAM_TUGAS_KEY, type.stringType()).setStyle(style1),
+                            col.column("Selesai Tugas", COLUMN_SELESAI_TUGAS_KEY, type.stringType()).setStyle(style1),
+                            col.column("Scan Masuk", COLUMN_SCAN_MASUK_KEY, type.stringType()).setStyle(style1),
+                            col.column("Scan Pulang", COLUMN_SCAN_PULANG_KEY, type.stringType()).setStyle(style1),
+                            col.column("Terlambat", COLUMN_TERLAMBAT_KEY, type.stringType()).setStyle(style1),
+                            col.column("Lebih Awal", COLUMN_LEBIH_AWAL_KEY, type.stringType()).setStyle(style1),
+                            col.column("Absen", COLUMN_ABSEN_KEY, type.stringType()).setStyle(style1)
                     )
-                    .setDataSource(generateDataSource(from, to))
+                    .setDataSource(generateDataSource(from, to, cbPegawai.getValue()))
                     .setParameter("logo", image)
                     .toPdf(outputStream);
             Util.showNotif("Sukses", "File absensi berhasil disimpan", NotificationType.SUCCESS);

@@ -3,6 +3,7 @@ package com.ptun.app.apis.enpoints;
 import com.ptun.app.apis.RetrofitBuilder;
 import com.ptun.app.apis.enpoints.models.AllScanLogs;
 import com.ptun.app.apis.enpoints.models.AllUsers;
+import com.ptun.app.apis.enpoints.models.Result;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -23,6 +24,10 @@ public interface EasyLinkPoints {
     @FormUrlEncoded
     @POST("scanlog/new")
     Call<AllScanLogs> newScanLogs(@Field("sn") String sn);
+
+    @FormUrlEncoded
+    @POST("user/set")
+    Call<Result> addNewUser(@Field("sn") String sn, @Field("pin") int pin, @Field("nama") String nama, @Field("pwd") int password, @Field("rfid") int rfid, @Field("priv") int privillage, @Field("tmp") String template);
 
     static EasyLinkPoints getClient() {
         return RetrofitBuilder.getInstance().create(EasyLinkPoints.class);
