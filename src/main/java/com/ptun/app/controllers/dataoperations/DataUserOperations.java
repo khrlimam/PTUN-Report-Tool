@@ -18,7 +18,7 @@ public class DataUserOperations {
     }
 
     public User findByPIN(String PIN) {
-        return this.getUsers()
+        return getUsers()
                 .stream()
                 .filter(user -> user.getPIN().equalsIgnoreCase(PIN)).findAny().get();
     }

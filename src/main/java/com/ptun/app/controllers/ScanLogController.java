@@ -3,6 +3,7 @@ package com.ptun.app.controllers;
 import com.google.common.eventbus.Subscribe;
 import com.j256.ormlite.dao.Dao;
 import com.ptun.app.App;
+import com.ptun.app.apis.GsonConverter;
 import com.ptun.app.apis.enpoints.models.AllScanLogs;
 import com.ptun.app.apis.enpoints.models.AllUsers;
 import com.ptun.app.apis.enpoints.models.Scan;

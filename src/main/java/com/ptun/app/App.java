@@ -4,7 +4,10 @@ package com.ptun.app;
  * Created by Lenovo on 4/28/2017.
  */
 
+import com.ptun.app.apis.GsonConverter;
+import com.ptun.app.apis.enpoints.models.AllScanLogs;
 import com.ptun.app.controllers.LoginModalController;
+import com.ptun.app.db.DB;
 import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.DBUtil;
 import javafx.application.Application;
@@ -17,6 +20,7 @@ import javafx.stage.Stage;
 import net.sf.dynamicreports.report.exception.DRException;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import static com.ptun.app.statics.Constants.LOGIN_UI;
 import static com.ptun.app.statics.Constants.MAIN_UI;
