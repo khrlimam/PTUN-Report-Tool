@@ -17,7 +17,7 @@ import java.sql.SQLException;
 @Data
 @DatabaseTable(tableName = "user")
 public class User {
-    @DatabaseField(generatedId = true, width = 9)
+    @DatabaseField(id = true, width = 9)
     private int PIN;
     @DatabaseField
     private String jabatan;

@@ -28,12 +28,10 @@ import java.util.ResourceBundle;
  * Created by khairulimam on 01/05/17.
  */
 @Data
-public class AddUserController implements Initializable {
+public class AddUserFromMachineController implements Initializable {
 
     @FXML
-    private TextField tfNama;
-    @FXML
-    private NumberTextField tfPassword;
+    private NumberTextField tfPin;
     @FXML
     private RadioButton rbHakim, rbStaff;
 
@@ -55,28 +53,16 @@ public class AddUserController implements Initializable {
     @FXML
     private void addUser(ActionEvent actionEvent) {
         try {
+            int PIN = Integer.parseInt(tfPin.getText());
             User newUser = new User();
+            newUser.setPIN(PIN);
             newUser.setJabatan(getPegawai().getText());
             dao.create(newUser);
-            System.out.println("created user " + newUser);
-            boolean result = EasyLinkPoints.getClient().addNewUser(Constants.SN, newUser.getPIN(), tfNama.getText(), Integer.parseInt(tfPassword.getText()), 0, 0, Util.getTemplateForPin(newUser.getPIN())).execute().body().isResult();
-            if (result) {
-                String message = String.format("%s baru berhasil ditambahkan. Silahkan tambahkan sidik jari baru untuk user:" +
-                        "\nNama: %s" +
-                        "\nPIN: %d" +
-                        "\n\nSelalu ingat untuk menambahkan sidik jari untuk user yang baru didaftarkan!", newUser.getJabatan(), getTfNama().getText(), newUser.getPIN());
-                Alert alert = Util.setUpDialog("Sukses", "Berhasil menambahkan user baru", message, Alert.AlertType.INFORMATION);
-                alert.showAndWait();
-                resetForm();
-                EventBus.getDefault().post(new NewUserEvent(newUser));
-            } else {
-                dao.delete(newUser);
-                Util.showNotif("Error", "User gagal ditambahkan!", NotificationType.ERROR);
-            }
+            resetForm();
+            EventBus.getDefault().post(new NewUserEvent(newUser));
+            Util.showNotif("Sukses", String.format("Berhasil menambahkan %s baru", newUser.getJabatan()), NotificationType.SUCCESS);
         } catch (NullPointerException e) {
             Util.showNotif("Error", String.format("Ada kesalahan %s", e.getMessage()), NotificationType.ERROR);
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -87,8 +73,7 @@ public class AddUserController implements Initializable {
     }
 
     public void resetForm() {
-        tfNama.setText("");
-        tfPassword.setText("");
+        tfPin.setText("");
         getRbJabatanGroup().getSelectedToggle().setSelected(false);
     }
 
