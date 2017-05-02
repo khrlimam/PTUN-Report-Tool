@@ -89,7 +89,7 @@
                 <configuration>
                     <mainClass>com.ptun.app.App</mainClass>
                     <verbose>true</verbose>
-                    <jfxMainAppJarName>PTUN Mataram Report Tool.jar</jfxMainAppJarName>
+                    <jfxMainAppJarName>PTUN Mataram Report Tool-simulasi.jar</jfxMainAppJarName>
                     <vendor>com.ptun.app</vendor>
                     <needShortcut>true</needShortcut>
                     <needMenu>true</needMenu>
