@@ -234,6 +234,7 @@ public class ScanLogController implements Initializable {
             StyleBuilder columnStyle = stl.style()
                     .setName("columnStyle")
                     .setPadding(1)
+                    .setBottomPadding(2)
                     .setVerticalAlignment(VerticalAlignment.MIDDLE);
             StyleBuilder columnTitleStyle = stl.style(columnStyle)
                     .setName("columnTitleStyle")
