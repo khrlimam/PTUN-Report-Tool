@@ -20,6 +20,7 @@ import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.Util;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
@@ -160,7 +161,7 @@ public class ScanLogController implements Initializable {
                     Scan scanInOfCurrentUser = scanLogsCurrentUser.stream().filter(scan -> scan.getIOMode() == Constants.SCAN_IN).findAny().orElse(new Scan());
                     Scan scanOutOfCurrentUser = scanLogsCurrentUser.stream().filter(scan -> scan.getIOMode() == Constants.SCAN_OUT).findAny().orElse(new Scan());
                     com.ptun.app.db.models.User getUserByPinFromDB = users.stream().filter(user1 -> user1.getPIN() == PIN).findAny().orElse(new com.ptun.app.db.models.User());
-                    value.put(COLUMN_PIN_KEY, PIN);
+                    value.put(COLUMN_PIN_KEY, String.valueOf(PIN));
                     value.put(COLUMN_NAMA_KEY, getUserByPinFromDB.getNama());
                     value.put(COLUMN_TANGGAL_KEY, date);
                     value.put(COLUMN_JAM_TUGAS_KEY, timeManagement.getOnDuty().getTime());
@@ -247,7 +248,7 @@ public class ScanLogController implements Initializable {
                     .setTemplateDesign(getClass().getClassLoader().getResource("absensikaryawan.jrxml"))
                     .columns(
                             col.column("No.", COLUMN_NOMOR_KEY, type.integerType()).setStyle(textCenterAllBorderStyle).setWidth(40),
-                            col.column("No Absen", COLUMN_PIN_KEY, type.integerType()).setStyle(textCenterAllBorderStyle).setWidth(70),
+                            col.column("No Absen", COLUMN_PIN_KEY, type.stringType()).setStyle(textCenterAllBorderStyle).setWidth(70),
                             col.column("Nama", COLUMN_NAMA_KEY, type.stringType()).setStyle(textCenterAllBorderStyle).setWidth(200).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT),
                             col.column("Date", COLUMN_TANGGAL_KEY, type.stringType()).setStyle(textCenterAllBorderStyle).setWidth(80),
                             col.column("On Duty", COLUMN_JAM_TUGAS_KEY, type.stringType()).setStyle(textCenterAllBorderStyle).setWidth(50),
@@ -286,6 +287,11 @@ public class ScanLogController implements Initializable {
     @Subscribe
     public void onNewUser(NewUserEvent event) {
         getUsers().add(event.getUser());
+    }
+
+    @FXML
+    private void filterData(ActionEvent actionEvent) {
+        tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
     }
 
     private class DatePickerPattern extends StringConverter<LocalDate> {
