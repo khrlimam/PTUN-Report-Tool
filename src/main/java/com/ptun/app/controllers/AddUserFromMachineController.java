@@ -1,25 +1,21 @@
 package com.ptun.app.controllers;
 
 import com.j256.ormlite.dao.Dao;
-import com.ptun.app.apis.endpoints.EasyLinkPoints;
 import com.ptun.app.customui.NumberTextField;
 import com.ptun.app.db.models.User;
 import com.ptun.app.enums.PEGAWAI_CHOICES;
 import com.ptun.app.eventbus.EventBus;
 import com.ptun.app.eventbus.events.NewUserEvent;
-import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import lombok.Data;
 import tray.notification.NotificationType;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -33,6 +29,8 @@ public class AddUserFromMachineController implements Initializable {
     @FXML
     private NumberTextField tfPin;
     @FXML
+    private TextField tfNama;
+    @FXML
     private RadioButton rbHakim, rbStaff;
 
     private ToggleGroup rbJabatanGroup = new ToggleGroup();
@@ -41,7 +39,7 @@ public class AddUserFromMachineController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         rbHakim.setText(PEGAWAI_CHOICES.HAKIM.name());
-        rbStaff.setText(PEGAWAI_CHOICES.STAFF.name());
+        rbStaff.setText(PEGAWAI_CHOICES.PEGAWAI.name());
         rbHakim.setToggleGroup(rbJabatanGroup);
         rbStaff.setToggleGroup(rbJabatanGroup);
     }
@@ -56,6 +54,7 @@ public class AddUserFromMachineController implements Initializable {
             int PIN = Integer.parseInt(tfPin.getText());
             User newUser = new User();
             newUser.setPIN(PIN);
+            newUser.setNama(getTfNama().getText());
             newUser.setJabatan(getPegawai().getText());
             dao.create(newUser);
             resetForm();
@@ -74,6 +73,7 @@ public class AddUserFromMachineController implements Initializable {
 
     public void resetForm() {
         tfPin.setText("");
+        tfNama.setText("");
         getRbJabatanGroup().getSelectedToggle().setSelected(false);
     }
 

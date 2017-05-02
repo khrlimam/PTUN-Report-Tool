@@ -43,7 +43,7 @@
         </HBox>
         <TableView fx:id="tblScanLog" prefHeight="525.0" prefWidth="780.0">
             <columns>
-                <TableColumn fx:id="cPin" minWidth="80.0" prefWidth="45.0" style="-fx-alignment: center" text="PIN" />
+                <TableColumn fx:id="cPin" minWidth="80.0" prefWidth="45.0" style="-fx-alignment: center" text="No Absen" />
                 <TableColumn fx:id="cNama" prefWidth="200.0" text="Nama" />
                 <TableColumn fx:id="cJabatan" prefWidth="75.0" style="-fx-alignment: center" text="Jabatan" />
                 <TableColumn fx:id="cTgl" style="-fx-alignment: center" text="Tanggal" />

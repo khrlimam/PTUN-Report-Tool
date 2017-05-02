@@ -52,7 +52,7 @@ public class Util {
 
     public static void showNotif(String title, String message, NotificationType type) {
         TrayNotification tray = setUpNotif(title, message, type);
-        tray.showAndDismiss(Duration.seconds(1));
+        tray.showAndDismiss(Duration.seconds(2));
     }
 
     public static String getTimeLaps(DateTime start, DateTime end) {

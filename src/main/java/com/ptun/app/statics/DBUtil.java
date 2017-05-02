@@ -102,9 +102,9 @@ public class DBUtil {
         userPin1.setPIN(999999991);
         userPin1.setJabatan(PEGAWAI_CHOICES.HAKIM.name());
         userPin2.setPIN(999999992);
-        userPin2.setJabatan(PEGAWAI_CHOICES.STAFF.name());
+        userPin2.setJabatan(PEGAWAI_CHOICES.PEGAWAI.name());
         userPin3.setPIN(999999993);
-        userPin3.setJabatan(PEGAWAI_CHOICES.STAFF.name());
+        userPin3.setJabatan(PEGAWAI_CHOICES.PEGAWAI.name());
         try {
             User.getDao().createIfNotExists(userPin1);
             User.getDao().createIfNotExists(userPin2);

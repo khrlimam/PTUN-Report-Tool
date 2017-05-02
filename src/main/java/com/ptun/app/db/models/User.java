@@ -21,6 +21,8 @@ public class User {
     private int PIN;
     @DatabaseField
     private String jabatan;
+    @DatabaseField
+    private String nama;
 
     public static Dao<User, Integer> getDao() {
         try {

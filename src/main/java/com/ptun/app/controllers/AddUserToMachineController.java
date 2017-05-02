@@ -43,7 +43,7 @@ public class AddUserToMachineController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         rbHakim.setText(PEGAWAI_CHOICES.HAKIM.name());
-        rbStaff.setText(PEGAWAI_CHOICES.STAFF.name());
+        rbStaff.setText(PEGAWAI_CHOICES.PEGAWAI.name());
         rbHakim.setToggleGroup(rbJabatanGroup);
         rbStaff.setToggleGroup(rbJabatanGroup);
     }
@@ -57,6 +57,7 @@ public class AddUserToMachineController implements Initializable {
         try {
             int PIN = Integer.parseInt(tfPin.getText());
             User newUser = new User();
+            newUser.setNama(tfNama.getText());
             newUser.setPIN(PIN);
             newUser.setJabatan(getPegawai().getText());
             dao.create(newUser);
@@ -72,7 +73,7 @@ public class AddUserToMachineController implements Initializable {
                 EventBus.getDefault().post(new NewUserEvent(newUser));
             } else {
                 dao.delete(newUser);
-                Util.showNotif("Error", "User gagal ditambahkan!", NotificationType.ERROR);
+                Util.showNotif("Error", "User gagal ditambahkan. Kemungkinan PIN yang dimasukkan sudah digunakan!", NotificationType.ERROR);
             }
         } catch (NullPointerException e) {
             Util.showNotif("Error", String.format("Ada kesalahan %s", e.getMessage()), NotificationType.ERROR);
