@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.ToolBar?>
@@ -28,11 +29,19 @@
                 </Pane>
                 <ToolBar>
                     <items>
-                  <Button mnemonicParsing="false" onAction="#showFormAddUserToMachine" styleClass="btn-primary" text="Tambah Karyawan Ke Mesin" />
-                  <Button mnemonicParsing="false" onAction="#showFormTambahKaryawanDariMesin" styleClass="btn-primary" text="Tambah Karyawan Dari Mesin" />
+                  <MenuButton mnemonicParsing="false" text="Tambah Karyawan">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#showFormAddUserToMachine" text="Ke Mesin" />
+                      <MenuItem mnemonicParsing="false" onAction="#showFormTambahKaryawanDariMesin" styleClass="bnt-" text="Dari Mesin" />
+                    </items>
+                  </MenuButton>
+                  <MenuButton mnemonicParsing="false" text="Pengaturan">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#showFormAppSetting" text="Aplikasi" />
+                      <MenuItem mnemonicParsing="false" onAction="#showFormTimeManagement" text="Waktu" />
+                    </items>
+                  </MenuButton>
                         <Pane HBox.hgrow="ALWAYS" />
-                        <Button fx:id="btnTambahPasien" mnemonicParsing="false" onAction="#showFormAppSetting" styleClass="btn-primary" text="Pengaturan Aplikasi" />
-                  <Button fx:id="btnTambahPasien1" mnemonicParsing="false" onAction="#showFormTimeManagement" styleClass="btn-primary" text="Managemen Waktu" />
                     </items>
                 </ToolBar>
                 <Pane />

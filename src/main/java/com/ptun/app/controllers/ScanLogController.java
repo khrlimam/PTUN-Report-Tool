@@ -23,15 +23,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import lombok.Data;
-import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.ReportTemplateBuilder;
 import net.sf.dynamicreports.report.builder.style.BorderBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
@@ -91,6 +87,8 @@ public class ScanLogController implements Initializable {
 
     @FXML
     private DatePicker dpDari, dpSampai;
+    @FXML
+    private Button btnDownloadReport;
 
     @FXML
     private ChoiceBox<String> cbPegawai;
@@ -139,12 +137,29 @@ public class ScanLogController implements Initializable {
     }
 
     @FXML
-    private void showReport() {
-        List<Scan> scanLogs = AllScanLogs.getMachineData();
-        List<User> users = AllUsers.getMachineData();
-        this.dataScanLogOperations = new DataScanLogOperations(scanLogs);
-        this.dataUserOperations = new DataUserOperations(users);
-        tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
+    private void getDataFromMachine() {
+        try {
+            downloading();
+            List<Scan> scanLogs = AllScanLogs.getMachineData();
+            List<User> users = AllUsers.getMachineData();
+            this.dataScanLogOperations = new DataScanLogOperations(scanLogs);
+            this.dataUserOperations = new DataUserOperations(users);
+            tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
+        }catch (Exception e) {
+            getBack();
+            e.printStackTrace();
+        }
+        getBack();
+    }
+
+    private void downloading() {
+        btnDownloadReport.setDisable(true);
+        btnDownloadReport.setText("Downloading ...");
+    }
+
+    private void getBack() {
+        btnDownloadReport.setDisable(false);
+        btnDownloadReport.setText("Download Data Mesin");
     }
 
     private ObservableList<Map> generateDataSource(String from, String to, String jabatan) {

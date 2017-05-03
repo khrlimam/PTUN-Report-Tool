@@ -43,7 +43,7 @@
                     </HBox.margin>
                 </Button>
                 <Pane prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                <Button minWidth="140.0" mnemonicParsing="false" onAction="#showReport" prefHeight="25.0" prefWidth="60.0" styleClass="btn-success" text="Download Data Mesin" />
+                <Button fx:id="btnDownloadReport" minWidth="140.0" mnemonicParsing="false" onAction="#getDataFromMachine" prefHeight="25.0" prefWidth="60.0" styleClass="btn-success" text="Download Data Mesin" />
             </children>
         </HBox>
         <TableView fx:id="tblScanLog" prefHeight="525.0" prefWidth="780.0">
@@ -51,14 +51,14 @@
                 <TableColumn fx:id="cPin" minWidth="80.0" prefWidth="45.0" style="-fx-alignment: center" text="No Absen" />
                 <TableColumn fx:id="cNama" prefWidth="200.0" text="Nama" />
                 <TableColumn fx:id="cJabatan" prefWidth="75.0" style="-fx-alignment: center" text="Jabatan" />
-                <TableColumn fx:id="cTgl" style="-fx-alignment: center" text="Tanggal" />
-                <TableColumn fx:id="cJamTugas" prefWidth="81.0" style="-fx-alignment: center" text="Jam Tugas" />
-                <TableColumn fx:id="cJamSelesaiTugas" prefWidth="97.0" style="-fx-alignment: center" text="Selesai Tugas" />
-                <TableColumn fx:id="cScanMasuk" prefWidth="85.0" style="-fx-alignment: center" text="Scan Masuk" />
-                <TableColumn fx:id="cScanPulang" prefWidth="96.0" style="-fx-alignment: center" text="Scan Pulang" />
-                <TableColumn fx:id="cTerlambat" minWidth="3.0" style="-fx-alignment: center" text="Terlambat" />
-                <TableColumn fx:id="cLebihAwal" minWidth="3.0" prefWidth="82.0" style="-fx-alignment: center" text="Lebih Awal" />
-                <TableColumn fx:id="cAbsen" minWidth="0.0" prefWidth="70.0" text="Absen" />
+                <TableColumn fx:id="cTgl" style="-fx-alignment: center" text="Date" />
+                <TableColumn fx:id="cJamTugas" prefWidth="81.0" style="-fx-alignment: center" text="On Duty" />
+                <TableColumn fx:id="cJamSelesaiTugas" prefWidth="97.0" style="-fx-alignment: center" text="Off Duty" />
+                <TableColumn fx:id="cScanMasuk" prefWidth="85.0" style="-fx-alignment: center" text="Clock In" />
+                <TableColumn fx:id="cScanPulang" prefWidth="96.0" style="-fx-alignment: center" text="Clock Out" />
+                <TableColumn fx:id="cTerlambat" minWidth="3.0" style="-fx-alignment: center" text="Late" />
+                <TableColumn fx:id="cLebihAwal" minWidth="3.0" prefWidth="82.0" style="-fx-alignment: center" text="Early" />
+                <TableColumn fx:id="cAbsen" minWidth="0.0" prefWidth="70.0" text="Absence" />
             </columns>
             <VBox.margin>
                 <Insets top="10.0" />
