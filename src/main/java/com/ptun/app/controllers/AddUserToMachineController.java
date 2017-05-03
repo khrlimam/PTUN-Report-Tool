@@ -73,7 +73,6 @@ public class AddUserToMachineController implements Initializable {
                 resetForm();
                 EventBus.getDefault().post(new NewUserEvent(newUser));
             } else {
-                getBack();
                 dao.delete(newUser);
                 Util.showNotif("Error", "User gagal ditambahkan. Kemungkinan PIN yang dimasukkan sudah digunakan!", NotificationType.ERROR);
             }
@@ -92,6 +91,7 @@ public class AddUserToMachineController implements Initializable {
             Util.showNotif("Error", String.format("Ada kesalahan %s", e.getMessage()), NotificationType.ERROR);
             e.printStackTrace();
         }
+        getBack();
     }
 
     private void getBack() {
