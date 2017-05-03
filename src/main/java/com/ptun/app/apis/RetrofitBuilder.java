@@ -17,6 +17,7 @@ public class RetrofitBuilder {
                     .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(GsonConverter.transform()))
                     .build();
+        System.out.println("Requesting to "+Constants.BASE_URL);
         return retrofit;
     }
 }

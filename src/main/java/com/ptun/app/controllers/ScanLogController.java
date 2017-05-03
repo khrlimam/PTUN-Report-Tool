@@ -36,6 +36,7 @@ import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.exception.DRException;
+import sun.reflect.generics.tree.Tree;
 import tray.notification.NotificationType;
 
 import javax.imageio.ImageIO;
@@ -169,12 +170,16 @@ public class ScanLogController implements Initializable {
         try {
             TreeSet<String> sortedDate = new TreeSet<>(keys);
             sortedDate.stream().forEach(date -> {
-                TreeSet<Integer> sortedPIN = new TreeSet<>(grouped.get(date).keySet().stream().map(s -> Integer.parseInt(s)).collect(Collectors.toSet()));
+                TreeSet<Integer> sortedPIN = new TreeSet<>(users.stream().map(user -> user.getPIN()).collect(Collectors.toSet()));
                 sortedPIN.stream().forEach(PIN -> {
                     List<Scan> scanLogsCurrentUser = grouped.get(date).get(String.valueOf(PIN));
                     Map value = new HashMap();
-                    Scan scanInOfCurrentUser = scanLogsCurrentUser.stream().filter(scan -> scan.getIOMode() == Constants.SCAN_IN).findAny().orElse(new Scan());
-                    Scan scanOutOfCurrentUser = scanLogsCurrentUser.stream().filter(scan -> scan.getIOMode() == Constants.SCAN_OUT).findAny().orElse(new Scan());
+                    Scan scanInOfCurrentUser = new Scan();
+                    Scan scanOutOfCurrentUser = new Scan();
+                    if (scanLogsCurrentUser != null) {
+                        scanInOfCurrentUser = scanLogsCurrentUser.stream().filter(scan -> scan.getIOMode() == Constants.SCAN_IN).findAny().orElse(new Scan());
+                        scanOutOfCurrentUser = scanLogsCurrentUser.stream().filter(scan -> scan.getIOMode() == Constants.SCAN_OUT).findAny().orElse(new Scan());
+                    }
                     com.ptun.app.db.models.User getUserByPinFromDB = users.stream().filter(user1 -> user1.getPIN() == PIN).findAny().orElse(new com.ptun.app.db.models.User());
                     value.put(COLUMN_PIN_KEY, String.valueOf(PIN));
                     value.put(COLUMN_NAMA_KEY, getUserByPinFromDB.getNama());

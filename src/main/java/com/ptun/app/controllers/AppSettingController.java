@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Lenovo on 4/29/2017.
  */
-public class AppSettingController implements Initializable {
+public class  AppSettingController implements Initializable {
 
     @FXML
     private TextField tfUsername, tfPassword, tfIpServer;
