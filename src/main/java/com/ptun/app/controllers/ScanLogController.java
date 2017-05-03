@@ -326,8 +326,8 @@ public class ScanLogController implements Initializable {
                 if (isDeleted) {
                     com.ptun.app.db.models.User.getDao().deleteById(Integer.valueOf(pin));
                     com.ptun.app.db.models.User deletedUser = users.stream().filter(user -> user.getPIN() == Integer.valueOf(pin)).findAny().get();
-                    boolean tes = users.remove(deletedUser);
-                    System.out.println(tes);
+                    users.remove(deletedUser);
+                    tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
                     Util.showNotif("Sukses", String.format("User dengan PIN %s telah dihapus", pin), NotificationType.SUCCESS);
                 }
             } catch (IOException e) {
