@@ -198,7 +198,8 @@ public class ScanLogController implements Initializable {
                     if (jabatan.equalsIgnoreCase(getUserByPinFromDB.getJabatan()))
                         data.add(value);
                     else if (!jabatan.equalsIgnoreCase(PEGAWAI_CHOICES.HAKIM.name()) &&
-                            !jabatan.equalsIgnoreCase(PEGAWAI_CHOICES.PEGAWAI.name()))
+                            !jabatan.equalsIgnoreCase(PEGAWAI_CHOICES.PEGAWAI.name()) &&
+                            !jabatan.equalsIgnoreCase(PEGAWAI_CHOICES.HONORER.name()))
                         data.add(value);
                 });
             });
