@@ -3,6 +3,7 @@ package com.ptun.app.controllers;
 import com.google.common.eventbus.Subscribe;
 import com.j256.ormlite.dao.Dao;
 import com.ptun.app.App;
+import com.ptun.app.apis.endpoints.EasyLinkPoints;
 import com.ptun.app.apis.endpoints.models.AllScanLogs;
 import com.ptun.app.apis.endpoints.models.AllUsers;
 import com.ptun.app.apis.endpoints.models.Scan;
@@ -140,8 +141,8 @@ public class ScanLogController implements Initializable {
     private void getDataFromMachine() {
         downloading();
         try {
-            List<Scan> scanLogs = AllScanLogs.getMachineData();
-            List<User> users = AllUsers.getMachineData();
+            List<Scan> scanLogs = AllScanLogs.getLocalData();
+            List<User> users = AllUsers.getLocalData();
             this.dataScanLogOperations = new DataScanLogOperations(scanLogs);
             this.dataUserOperations = new DataUserOperations(users);
             tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
@@ -312,6 +313,30 @@ public class ScanLogController implements Initializable {
     @FXML
     private void filterData(ActionEvent actionEvent) {
         tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
+    }
+
+    public void hapusUser(ActionEvent actionEvent) {
+        Map selectedUser = (Map) tblScanLog.getSelectionModel().getSelectedItem();
+        String pin = (String) selectedUser.get(COLUMN_PIN_KEY);
+        Optional<ButtonType> decision = Util.deleteConfirmation().showAndWait();
+        boolean isOK = decision.get().getButtonData().equals(ButtonBar.ButtonData.OK_DONE);
+        if (isOK)
+            try {
+                boolean isDeleted = EasyLinkPoints.getClient().deleteUser(Constants.SN, pin).execute().isSuccessful();
+                if (isDeleted) {
+                    com.ptun.app.db.models.User.getDao().deleteById(Integer.valueOf(pin));
+                    com.ptun.app.db.models.User deletedUser = users.stream().filter(user -> user.getPIN() == Integer.valueOf(pin)).findAny().get();
+                    boolean tes = users.remove(deletedUser);
+                    System.out.println(tes);
+                    Util.showNotif("Sukses", String.format("User dengan PIN %s telah dihapus", pin), NotificationType.SUCCESS);
+                }
+            } catch (IOException e) {
+                Util.showNotif("Gagal", "Ada kesalahan!", NotificationType.ERROR);
+                e.printStackTrace();
+            } catch (SQLException e) {
+                Util.showNotif("Gagal", "Ada kesalahan!", NotificationType.ERROR);
+                e.printStackTrace();
+            }
     }
 
     private class DatePickerPattern extends StringConverter<LocalDate> {

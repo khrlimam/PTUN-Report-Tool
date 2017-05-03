@@ -29,6 +29,10 @@ public interface EasyLinkPoints {
     @POST("user/set")
     Call<Result> addNewUser(@Field("sn") String sn, @Field("pin") int pin, @Field("nama") String nama, @Field("pwd") int password, @Field("rfid") int rfid, @Field("priv") int privillage, @Field("tmp") String template);
 
+    @FormUrlEncoded
+    @POST("user/del")
+    Call<Result> deleteUser(@Field("sn") String sn, @Field("pin") String PIN);
+
     static EasyLinkPoints getClient() {
         return RetrofitBuilder.getInstance().create(EasyLinkPoints.class);
     }

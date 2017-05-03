@@ -37,13 +37,14 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Button>
-                <Button minWidth="120.0" mnemonicParsing="false" onAction="#downloadReport" prefHeight="25.0" prefWidth="160.0" styleClass="btn-info" text="Simpan Laporan" textFill="WHITE">
+                <Button minWidth="115.0" mnemonicParsing="false" onAction="#downloadReport" prefHeight="25.0" prefWidth="160.0" styleClass="btn-info" text="Simpan Laporan" textFill="WHITE">
                     <HBox.margin>
                         <Insets right="3.0" />
                     </HBox.margin>
                 </Button>
+            <Button minWidth="90.0" mnemonicParsing="false" onAction="#hapusUser" styleClass="btn-danger" text="Hapus User" />
                 <Pane prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                <Button fx:id="btnDownloadReport" minWidth="140.0" mnemonicParsing="false" onAction="#getDataFromMachine" prefHeight="25.0" prefWidth="60.0" styleClass="btn-success" text="Download Data Mesin" />
+                <Button fx:id="btnDownloadReport" minWidth="150.0" mnemonicParsing="false" onAction="#getDataFromMachine" prefHeight="25.0" prefWidth="60.0" styleClass="btn-success" text="Download Data Mesin" />
             </children>
         </HBox>
         <TableView fx:id="tblScanLog" prefHeight="525.0" prefWidth="780.0">

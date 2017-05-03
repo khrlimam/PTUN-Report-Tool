@@ -82,6 +82,10 @@ public class Util {
         return alert;
     }
 
+    public static Alert deleteConfirmation() {
+        return setUpDialog("Konfirmasi", "Yakin ingin menghapus data?", "Hati-hati dengan pilihan anda!", Alert.AlertType.CONFIRMATION);
+    }
+
     public static String getTemplateForPin(int pin) {
         return String.format("[{\"pin\": \"%d\",\"idx\": 0,\"alg_ver\": 39,\"template\": \"\"}]", pin);
     }
