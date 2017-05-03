@@ -31,7 +31,7 @@ public class AddUserFromMachineController implements Initializable {
     @FXML
     private TextField tfNama;
     @FXML
-    private RadioButton rbHakim, rbStaff;
+    private RadioButton rbHakim, rbStaff, rbHonorer;
 
     private ToggleGroup rbJabatanGroup = new ToggleGroup();
     private Dao<User, Integer> dao = User.getDao();
@@ -40,8 +40,10 @@ public class AddUserFromMachineController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         rbHakim.setText(PEGAWAI_CHOICES.HAKIM.name());
         rbStaff.setText(PEGAWAI_CHOICES.PEGAWAI.name());
+        rbHonorer.setText(PEGAWAI_CHOICES.HONORER.name());
         rbHakim.setToggleGroup(rbJabatanGroup);
         rbStaff.setToggleGroup(rbJabatanGroup);
+        rbHonorer.setToggleGroup(rbJabatanGroup);
     }
 
     private RadioButton getPegawai() {

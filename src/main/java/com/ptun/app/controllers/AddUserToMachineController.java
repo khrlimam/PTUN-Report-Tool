@@ -32,7 +32,7 @@ public class AddUserToMachineController implements Initializable {
     @FXML
     private NumberTextField tfPin;
     @FXML
-    private RadioButton rbHakim, rbStaff;
+    private RadioButton rbHakim, rbStaff, rbHonorer;
     @FXML
     private Button btnSimpan;
 
@@ -43,8 +43,10 @@ public class AddUserToMachineController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         rbHakim.setText(PEGAWAI_CHOICES.HAKIM.name());
         rbStaff.setText(PEGAWAI_CHOICES.PEGAWAI.name());
+        rbHonorer.setText(PEGAWAI_CHOICES.HONORER.name());
         rbHakim.setToggleGroup(rbJabatanGroup);
         rbStaff.setToggleGroup(rbJabatanGroup);
+        rbHonorer.setToggleGroup(rbJabatanGroup);
     }
 
     private RadioButton getPegawai() {
