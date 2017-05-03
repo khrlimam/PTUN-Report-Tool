@@ -12,10 +12,7 @@ import com.ptun.app.statics.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import lombok.Data;
 import tray.notification.NotificationType;
 
@@ -36,6 +33,8 @@ public class AddUserToMachineController implements Initializable {
     private NumberTextField tfPin;
     @FXML
     private RadioButton rbHakim, rbStaff;
+    @FXML
+    private Button btnSimpan;
 
     private ToggleGroup rbJabatanGroup = new ToggleGroup();
     private Dao<User, Integer> dao = User.getDao();
@@ -55,6 +54,8 @@ public class AddUserToMachineController implements Initializable {
     @FXML
     private void addUser(ActionEvent actionEvent) {
         try {
+            btnSimpan.setDisable(true);
+            btnSimpan.setText("Menyimpan ...");
             int PIN = Integer.parseInt(tfPin.getText());
             User newUser = new User();
             newUser.setNama(tfNama.getText());
@@ -72,20 +73,30 @@ public class AddUserToMachineController implements Initializable {
                 resetForm();
                 EventBus.getDefault().post(new NewUserEvent(newUser));
             } else {
+                getBack();
                 dao.delete(newUser);
                 Util.showNotif("Error", "User gagal ditambahkan. Kemungkinan PIN yang dimasukkan sudah digunakan!", NotificationType.ERROR);
             }
         } catch (NullPointerException e) {
+            getBack();
             Util.showNotif("Error", String.format("Ada kesalahan %s", e.getMessage()), NotificationType.ERROR);
             e.printStackTrace();
         } catch (IOException e) {
+            getBack();
             e.printStackTrace();
         } catch (SQLException e) {
+            getBack();
             e.printStackTrace();
         } catch (NumberFormatException e) {
+            getBack();
             Util.showNotif("Error", String.format("Ada kesalahan %s", e.getMessage()), NotificationType.ERROR);
             e.printStackTrace();
         }
+    }
+
+    private void getBack() {
+        btnSimpan.setText("Simpan");
+        btnSimpan.setDisable(false);
     }
 
     public void resetForm() {
