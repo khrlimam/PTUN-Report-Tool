@@ -36,7 +36,6 @@ import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.exception.DRException;
-import sun.reflect.generics.tree.Tree;
 import tray.notification.NotificationType;
 
 import javax.imageio.ImageIO;
@@ -139,14 +138,14 @@ public class ScanLogController implements Initializable {
 
     @FXML
     private void getDataFromMachine() {
+        downloading();
         try {
-            downloading();
             List<Scan> scanLogs = AllScanLogs.getMachineData();
             List<User> users = AllUsers.getMachineData();
             this.dataScanLogOperations = new DataScanLogOperations(scanLogs);
             this.dataUserOperations = new DataUserOperations(users);
             tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
-        }catch (Exception e) {
+        } catch (Exception e) {
             getBack();
             e.printStackTrace();
         }
@@ -196,11 +195,10 @@ public class ScanLogController implements Initializable {
                     value.put(COLUMN_NORMAL_REAL_TIME_KEY, "");
                     value.put(COLUMN_DEPARTMENT_KEY, "");
 
-                    if (!jabatan.equalsIgnoreCase(PEGAWAI_CHOICES.HAKIM.name()) &&
-                            !jabatan.equalsIgnoreCase(PEGAWAI_CHOICES.PEGAWAI.name()))
+                    if (jabatan.equalsIgnoreCase(getUserByPinFromDB.getJabatan()))
                         data.add(value);
-
-                    else if (jabatan.equalsIgnoreCase(getUserByPinFromDB.getJabatan()))
+                    else if (!jabatan.equalsIgnoreCase(PEGAWAI_CHOICES.HAKIM.name()) &&
+                            !jabatan.equalsIgnoreCase(PEGAWAI_CHOICES.PEGAWAI.name()))
                         data.add(value);
                 });
             });

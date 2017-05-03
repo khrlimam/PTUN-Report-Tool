@@ -55,9 +55,9 @@ public class AddUserToMachineController implements Initializable {
 
     @FXML
     private void addUser(ActionEvent actionEvent) {
+        btnSimpan.setDisable(true);
+        btnSimpan.setText("Menyimpan ...");
         try {
-            btnSimpan.setDisable(true);
-            btnSimpan.setText("Menyimpan ...");
             int PIN = Integer.parseInt(tfPin.getText());
             User newUser = new User();
             newUser.setNama(tfNama.getText());
