@@ -61,7 +61,6 @@ public class ScanLogController implements Initializable {
     private static final String COLUMN_NORMAL_REAL_TIME_KEY = "NORMAL_REAL_TIME";
     private static final String COLUMN_DEPARTMENT_KEY = "DEPARTMENT_KEY";
     private static final String COLUMN_NOMOR_KEY = "NOMOR_KEY";
-    private DataUserOperations dataUserOperations;
     private DataScanLogOperations dataScanLogOperations;
     private Dao<com.ptun.app.db.models.User, Integer> userDao = com.ptun.app.db.models.User.getDao();
     private List<com.ptun.app.db.models.User> users = userDao.queryForAll();
@@ -141,10 +140,8 @@ public class ScanLogController implements Initializable {
     private void getDataFromMachine() {
         downloading();
         try {
-            List<Scan> scanLogs = AllScanLogs.getMachineData();
-            List<User> users = AllUsers.getMachineData();
+            List<Scan> scanLogs = AllScanLogs.getLocalData();
             this.dataScanLogOperations = new DataScanLogOperations(scanLogs);
-            this.dataUserOperations = new DataUserOperations(users);
             tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
         } catch (Exception e) {
             getBack();
@@ -315,7 +312,8 @@ public class ScanLogController implements Initializable {
         tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
     }
 
-    public void hapusUser(ActionEvent actionEvent) {
+    @FXML
+    private void hapusUser(ActionEvent actionEvent) {
         Map selectedUser = (Map) tblScanLog.getSelectionModel().getSelectedItem();
         String pin = (String) selectedUser.get(COLUMN_PIN_KEY);
         Optional<ButtonType> decision = Util.deleteConfirmation().showAndWait();
