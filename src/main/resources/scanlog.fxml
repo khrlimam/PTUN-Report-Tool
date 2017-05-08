@@ -16,13 +16,13 @@
         <HBox stylesheets="@main.css">
             <children>
                 <Label minWidth="39.0" prefHeight="25.0" prefWidth="39.0" text="Dari:" />
-                <DatePicker fx:id="dpDari" prefHeight="25.0" prefWidth="133.0">
+                <DatePicker fx:id="dpDari" prefHeight="25.0" prefWidth="133.0" promptText="Dari tanggal">
                     <HBox.margin>
                         <Insets right="10.0" />
                     </HBox.margin>
                 </DatePicker>
                 <Label minWidth="57.0" prefHeight="25.0" prefWidth="57.0" text="Sampai: " />
-                <DatePicker fx:id="dpSampai" prefWidth="133.0">
+                <DatePicker fx:id="dpSampai" prefWidth="133.0" promptText="Sampai tanggal">
                     <HBox.margin>
                         <Insets right="10.0" />
                     </HBox.margin>
@@ -37,7 +37,7 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Button>
-                <Button minWidth="115.0" mnemonicParsing="false" onAction="#downloadReport" prefHeight="25.0" prefWidth="160.0" styleClass="btn-info" text="Simpan Laporan" textFill="WHITE">
+                <Button minWidth="100.0" mnemonicParsing="false" onAction="#downloadReport" prefHeight="25.0" styleClass="btn-info" text="Simpan Laporan" textFill="WHITE">
                     <HBox.margin>
                         <Insets right="3.0" />
                     </HBox.margin>
