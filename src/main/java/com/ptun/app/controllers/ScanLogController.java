@@ -158,7 +158,7 @@ public class ScanLogController implements Initializable {
     private void getDataFromMachine() {
         downloading();
         try {
-            List<Scan> scanLogs = AllScanLogs.getLocalData();
+            List<Scan> scanLogs = AllScanLogs.getMachineData();
             this.dataScanLogOperations = new DataScanLogOperations(scanLogs);
             tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
         } catch (Exception e) {
