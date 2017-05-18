@@ -59,7 +59,7 @@
                 <TableColumn fx:id="cScanPulang" prefWidth="96.0" style="-fx-alignment: center" text="Clock Out" />
                 <TableColumn fx:id="cTerlambat" minWidth="3.0" style="-fx-alignment: center" text="Late" />
                 <TableColumn fx:id="cLebihAwal" minWidth="3.0" prefWidth="82.0" style="-fx-alignment: center" text="Early" />
-                <TableColumn fx:id="cAbsen" minWidth="0.0" prefWidth="70.0" text="Absence" />
+                <TableColumn fx:id="cAbsen" style="-fx-alignment: center" minWidth="0.0" prefWidth="70.0" text="Absence" />
             </columns>
             <VBox.margin>
                 <Insets top="10.0" />

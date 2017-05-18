@@ -27,6 +27,7 @@
 		<parameterDescription><![CDATA[The letterhead image]]></parameterDescription>
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="status_pegawai" class="java.lang.String"/>
 	<pageHeader>
 		<band height="119" splitType="Stretch">
 			<image>
@@ -61,13 +62,15 @@
 				</textElement>
 				<text><![CDATA[MATARAM]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="167" y="99" width="582" height="20" uuid="55be307f-6d61-4759-8361-f196a1dd4700"/>
-				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Daftar Hadir Hakim/Pegawai PTUN Mataram]]></text>
-			</staticText>
+			<elementGroup>
+				<textField>
+					<reportElement x="167" y="97" width="582" height="20" uuid="94dfcd9a-156e-4ecd-a3e2-a86a62df0ee9"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{status_pegawai}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
 		</band>
 	</pageHeader>
 	<pageFooter>

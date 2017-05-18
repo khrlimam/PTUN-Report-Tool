@@ -5,11 +5,8 @@ import com.j256.ormlite.dao.Dao;
 import com.ptun.app.App;
 import com.ptun.app.apis.endpoints.EasyLinkPoints;
 import com.ptun.app.apis.endpoints.models.AllScanLogs;
-import com.ptun.app.apis.endpoints.models.AllUsers;
 import com.ptun.app.apis.endpoints.models.Scan;
-import com.ptun.app.apis.endpoints.models.User;
 import com.ptun.app.controllers.dataoperations.DataScanLogOperations;
-import com.ptun.app.controllers.dataoperations.DataUserOperations;
 import com.ptun.app.db.models.AppSettings;
 import com.ptun.app.db.models.TimeManagement;
 import com.ptun.app.enums.PEGAWAI_CHOICES;
@@ -22,10 +19,12 @@ import com.ptun.app.statics.Util;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import lombok.Data;
@@ -123,6 +122,7 @@ public class ScanLogController implements Initializable {
     }
 
     private void setUpTableColumns() {
+        tblScanLog.setEditable(true);
         cPin.setCellValueFactory(new MapValueFactory<>(COLUMN_PIN_KEY));
         cNama.setCellValueFactory(new MapValueFactory<>(COLUMN_NAMA_KEY));
         cJabatan.setCellValueFactory(new MapValueFactory<>(COLUMN_JABATAN_KEY));
@@ -134,13 +134,31 @@ public class ScanLogController implements Initializable {
         cTerlambat.setCellValueFactory(new MapValueFactory<>(COLUMN_TERLAMBAT_KEY));
         cLebihAwal.setCellValueFactory(new MapValueFactory<>(COLUMN_LEBIH_AWAL_KEY));
         cAbsen.setCellValueFactory(new MapValueFactory<>(COLUMN_ABSEN_KEY));
+        cNama.setCellFactory(TextFieldTableCell.forTableColumn());
+        cNama.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Map, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Map, String> event) {
+                Map value = event.getTableView().getItems().get(event.getTablePosition().getRow());
+                try {
+                    com.ptun.app.db.models.User selectedUser = userDao.queryForId(Integer.valueOf((String) value.get(COLUMN_PIN_KEY)));
+                    selectedUser.setNama(event.getNewValue());
+                    int isSuccess = userDao.update(selectedUser);
+                    if (isSuccess == 1) {
+                        Util.showNotif("Sukses", String.format("Berhasil merubah nama menjadi %s", selectedUser.getNama()), NotificationType.SUCCESS);
+                        users = userDao.queryForAll();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @FXML
     private void getDataFromMachine() {
         downloading();
         try {
-            List<Scan> scanLogs = AllScanLogs.getMachineData();
+            List<Scan> scanLogs = AllScanLogs.getLocalData();
             this.dataScanLogOperations = new DataScanLogOperations(scanLogs);
             tblScanLog.setItems(generateDataSource(dpDari.getEditor().getText(), dpSampai.getEditor().getText(), getCbPegawai().getValue()));
         } catch (Exception e) {
@@ -178,6 +196,7 @@ public class ScanLogController implements Initializable {
                         scanOutOfCurrentUser = scanLogsCurrentUser.stream().filter(scan -> scan.getIOMode() == Constants.SCAN_OUT).findAny().orElse(new Scan());
                     }
                     com.ptun.app.db.models.User getUserByPinFromDB = users.stream().filter(user1 -> user1.getPIN() == PIN).findAny().orElse(new com.ptun.app.db.models.User());
+
                     value.put(COLUMN_PIN_KEY, String.valueOf(PIN));
                     value.put(COLUMN_NAMA_KEY, getUserByPinFromDB.getNama());
                     value.put(COLUMN_TANGGAL_KEY, date);
@@ -188,7 +207,7 @@ public class ScanLogController implements Initializable {
                     value.put(COLUMN_SCAN_PULANG_KEY, scanOutOfCurrentUser.getScanTime());
                     value.put(COLUMN_TERLAMBAT_KEY, scanInOfCurrentUser.getLate(timeManagement.getLateTolerance(), timeManagement.getOnDuty().getTime()));
                     value.put(COLUMN_LEBIH_AWAL_KEY, scanOutOfCurrentUser.getEarly(timeManagement.getEarlyTolerance(), timeManagement.getOffDuty().getTime()));
-                    value.put(COLUMN_ABSEN_KEY, scanInOfCurrentUser.getAbsen());
+                    value.put(COLUMN_ABSEN_KEY, scanInOfCurrentUser.getAbsen(scanInOfCurrentUser, scanOutOfCurrentUser));
                     value.put(COLUMN_TIME_TABLE_KEY, "normal");
                     value.put(COLUMN_NORMAL_REAL_TIME_KEY, "");
                     value.put(COLUMN_DEPARTMENT_KEY, "");
@@ -235,6 +254,10 @@ public class ScanLogController implements Initializable {
             File file = fileChooser.showSaveDialog(App.PRIMARY_STAGE);
             OutputStream outputStream = new FileOutputStream(file);
             BufferedImage image = ImageIO.read(getClass().getResource("/logo.jpeg"));
+            Map parameters = new HashMap();
+            String status_pegawai = String.format("Daftar Hadir %s PTUN Mataram", cbPegawai.getSelectionModel().getSelectedItem());
+            parameters.put("status_pegawai", status_pegawai);
+            parameters.put("logo", image);
             BorderBuilder border = stl.border();
             border
                     .setBottomPen(stl.penThin())
@@ -281,7 +304,7 @@ public class ScanLogController implements Initializable {
                             col.column("Departement", COLUMN_DEPARTMENT_KEY, type.stringType()).setStyle(textCenterAllBorderStyle).setWidth(80)
                     )
                     .setDataSource(generateDataSource(from, to, cbPegawai.getValue()))
-                    .setParameter("logo", image)
+                    .setParameters(parameters)
                     .toPdf(outputStream);
             Util.showNotif("Sukses", "File absensi berhasil disimpan", NotificationType.SUCCESS);
         } catch (NullPointerException e) {

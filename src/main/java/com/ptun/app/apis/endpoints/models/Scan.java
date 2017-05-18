@@ -5,7 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import com.ptun.app.statics.Constants;
 import com.ptun.app.statics.Util;
 import lombok.Data;
-import org.joda.time.*;
+import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 
 @Data
@@ -71,8 +72,12 @@ public class Scan {
         }
     }
 
-    public String getAbsen() {
-        return "";
+    public String getAbsen(Scan in, Scan out) {
+        String isAbsen = "";
+        if (in.getScanTime().equalsIgnoreCase("-")
+                && out.getScanTime().equalsIgnoreCase("-"))
+            isAbsen = "Ya";
+        return isAbsen;
     }
 
 }
